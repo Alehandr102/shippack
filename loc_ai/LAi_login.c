@@ -1,0 +1,777 @@
+
+int LAi_loginedcharacters[MAX_CHARS_IN_LOC];
+int LAi_numloginedcharacters = 0;
+
+
+bool LAi_CharacterLogin(aref chr, string locID)
+{
+	string func;
+	//Проверим адрес логина
+	if(CheckAttribute(chr, "location") == false)
+	{
+		Trace("Character <" + chr.id + "> have not field [location]");
+		return false;
+	}
+	if(chr.id == "0")
+	{
+		chr.location = "none";
+		return false;
+	}
+	bool isLogin = false;
+	if(chr.location == locID)
+	{
+		if(sti(chr.index) == nMainCharacterIndex) isLogin = true;
+		if(CheckAttribute(chr, "location.stime") != false)
+		{
+			if(CheckAttribute(chr, "location.etime") != false)
+			{
+				//Проверям время логина
+				if(LAi_login_CheckTime(stf(chr.location.stime), stf(chr.location.etime)))
+				{
+					isLogin = true;
+				}
+			}
+			else
+			{
+				isLogin = true;
+			}
+		}
+		else
+		{
+			isLogin = true;
+		}
+	}
+	//Залогинем последователей
+	if(!LAi_IsBoarding)
+	{
+		if(CheckAttribute(chr, "location.follower") != false)
+		{
+			chr.location = pchar.location;
+			chr.location.group = pchar.location.group;
+			chr.location.locator = pchar.location.locator;
+			isLogin = true;
+			if(LAi_restoreStates)
+			{
+				LAi_SetCurHPMax(chr);
+			}
+		}
+	}
+	//Проверим на захваченность локации
+	if(LAi_IsCapturedLocation)
+	{
+		if(GetMainCharacterIndex() != sti(chr.index))
+		{
+   			// boal fix fort officers -->
+			if(!IsOfficer(chr))
+			{
+				if(CheckAttribute(chr, "location.loadcapture") == 0)
+				{
+					isLogin = false;
+				}else{
+					if(sti(chr.location.loadcapture) == 0)
+					{
+						isLogin = false;
+					}
+				}
+			}
+			// boal fix fort officers <--
+		}
+	}
+	if(!isLogin) return false;
+	//Если персонажей больше максимального числа, незагружаем больше
+	if(LAi_numloginedcharacters >= MAX_CHARS_IN_LOC)
+	{
+		Trace("LAi_CharacterLogin -> many logined characters in location > " + MAX_CHARS_IN_LOC);
+		return false;
+	}
+	if (GetArraySize(&LAi_loginedcharacters) < MAX_CHARS_IN_LOC)
+	{
+		trace("arraysize "+GetArraySize(&LAi_loginedcharacters));
+		SetArraySize(&LAi_loginedcharacters, MAX_CHARS_IN_LOC);
+	}
+	//Устанавливаем необходимые поля, если надо
+	if(CheckAttribute(chr, "chr_ai.type") == false)
+	{
+		chr.chr_ai.type = LAI_DEFAULT_TYPE;
+	}
+	if(CheckAttribute(chr, "chr_ai.tmpl") == false)
+	{
+		chr.chr_ai.tmpl = LAI_DEFAULT_TEMPLATE;
+	}
+	if(CheckAttribute(chr, "chr_ai.group") == false)
+	{
+		chr.chr_ai.group = LAI_DEFAULT_GROUP;
+	}
+	if(CheckAttribute(chr, "chr_ai.alarmreact") == false)
+	{
+		chr.chr_ai.alarmreact = LAI_DEFAULT_ALARMREACT;
+	}
+	if(CheckAttribute(chr, "chr_ai.grpalarmr") == false)
+	{
+		chr.chr_ai.grpalarmr = LAI_DEFAULT_GRPALARMR;
+	}
+	if(CheckAttribute(chr, "chr_ai.hp") == false)
+	{
+		chr.chr_ai.hp = LAI_DEFAULT_HP;
+	}
+	if(CheckAttribute(chr, "chr_ai.hp_max") == false)
+	{
+		chr.chr_ai.hp_max = LAI_DEFAULT_HP_MAX;
+	}
+	if(CheckAttribute(chr, "chr_ai.charge") == false)
+	{
+		chr.chr_ai.charge = LAI_DEFAULT_CHARGE;
+	}
+	SetEnergyToCharacter(chr);  // boal
+
+	//Проверяем хитпойнты
+	float hp = stf(chr.chr_ai.hp);
+	float hpmax = stf(chr.chr_ai.hp_max);
+	if(hpmax < 1) hpmax = 1;
+	chr.chr_ai.hp_max = hpmax;
+	if(hp > hpmax) hp = hpmax;
+	if(hp < 0) hp = 0;
+	chr.chr_ai.hp = hp;
+	if(!actLoadFlag)
+	{
+		if(hp < 1)
+		{
+			if(CheckAttribute(chr, "location.norebirth") != false)
+			{
+				if(sti(chr.location.norebirth) != 0) return false;
+			}
+			//Надо возраждать персонажа
+			chr.chr_ai.hp = hpmax;
+			hp = hpmax;
+			if (!CheckAttribute(chr, "location.rebirthOldName"))
+			{
+				SetRandomNameToCharacter(chr);
+			}
+			func = chr.chr_ai.type;
+			chr.chr_ai.type = "";
+			chr.chr_ai.tmpl = "";
+			if(func != "")
+			{
+				func = "LAi_type_" + func + "_Init";
+				call func(chr);
+			}
+		}
+	}
+	if(hp < 1) return false;
+	//Проверяем персонажа
+	if(LAi_CheckCharacter(chr, "LAi_CharacterLogin") == false) return false;
+	//Выставляем скилл для сражения
+
+	//Логиним персонажа
+	func = chr.chr_ai.type;
+	bool res = true;
+	if(func != "")
+	{
+		func = "LAi_type_" + func + "_CharacterLogin";
+		res = call func(chr);
+	}
+	if(res == false) return false;
+	//#20210221-01
+	chr.isLogin = true;
+	chr.chr_ai.login = true;
+	LAi_AddLoginedCharacter(chr);
+	chr.radarcat = LandRadar_GetCharCat(chr); // LEO: категория цвета блипа на радаре (этап 2)
+
+	if(CheckAttribute(chr, "quest.questflag"))
+	{
+		CheckQuestForCharacter(chr);
+	}
+	if(CheckAttribute(chr, "currentquest"))
+	{
+		CheckQuestForCharacter(chr);
+		if(chr.chr_ai.type == LAI_TYPE_CITIZEN)
+		{
+			chr.chr_ai.group = "";
+		}
+	}
+	return true;
+}
+
+// LEO: пере-тег боевых цветов радара (свой/враг) для всех залогиненных персонажей локации.
+// Живёт здесь, рядом с LAi_loginedcharacters[] (массив локальный этому файлу — без кросс-файл глобалов);
+// зовётся из BLI_UpdateObjectData во время абордажа/штурма форта. LandRadar_GetCharCat сам решает цвет по LAi_IsBoardingProcess().
+void LandRadar_RetagCombat()
+{
+	ref chr;
+	int idx;
+	for(int i = 0; i < LAi_numloginedcharacters; i++)
+	{
+		idx = LAi_loginedcharacters[i];
+		if(idx < 0) continue;
+		chr = &Characters[idx];
+		chr.radarcat = LandRadar_GetCharCat(chr);
+	}
+}
+
+// Gregg: обход лоточников ТЕКУЩЕЙ локации для рейда казначея (Treasurer_PortRun в store\StoreUtilite.c).
+// Живёт здесь, рядом с LAi_loginedcharacters[] (массив локальный этому файлу - без кросс-файл глобалов).
+// Барыгу (isFence) не трогаем: его ассортимент задан один раз при спавне и не обновляется.
+void Treasurer_RunMerchants(ref rStat)
+{
+	ref chr;
+	int idx;
+	int iNum = 0;
+	string sWhere;
+	for(int i = 0; i < LAi_numloginedcharacters; i++)
+	{
+		idx = LAi_loginedcharacters[i];
+		if(idx < 0) continue;
+		chr = &Characters[idx];
+		if(!CheckAttribute(chr, "Merchant")) continue;
+		if(CheckAttribute(chr, "isFence")) continue;
+		iNum++;
+		TreasurerRun_RefreshTrader(chr, false);
+		TreasurerRun_ConsumeAt(chr, rStat);
+		// в отчёте лоточник подписывается своим именем (у фантомов оно есть - SetRandomNameToCharacter),
+		// безымянный - по порядковому номеру
+		sWhere = GetFullName(chr);
+		if(sWhere == "") sWhere = GetConvertStrWithReplace("Variable_treasurer_pedlar", "Logs.txt", "#space#", " ") + " " + iNum;
+		TreasurerReport_ScanRare(chr, sWhere, rStat);
+	}
+}
+
+void LAi_CharacterPostLogin(ref location)
+{
+	ref chr;
+	int idx;
+	//Расставляем последователей
+	for(int i = 0; i < LAi_numloginedcharacters; i++)
+	{
+		idx = LAi_loginedcharacters[i];
+		if(idx >= 0)
+		{
+			//Просматриваем последователей
+			chr = &Characters[idx];
+			if(CheckAttribute(chr, "location.follower") != false)
+			{
+				//Получим координаты игрока
+				float x, y, z;
+				if(GetCharacterPos(pchar, &x, &y, &z) == false)
+				{
+					x = 0.0; y = 0.0; z = 0.0;
+				}
+				//Ищем свободный ближайший локатор
+				string locator = LAi_FindNearestFreeLocator("goto", x, y, z);
+				if(locator != "")
+				{
+					TeleportCharacterToLocator(chr, "goto", locator)
+					CharacterTurnByChr(chr, pchar);
+				}else{
+					Trace("Can't find good locator for follower character <" + chr.id + ">");
+				}
+			}
+			if (CheckAttribute(chr, "model") && findsubstr(chr.model, "ghost" , 0) != -1 )
+			{
+				object persRef = GetCharacterModel(chr);
+				SendMessage(persRef, "ls", MSG_MODEL_SET_TECHNIQUE, "DLightMark");
+			}
+		}
+	}
+	if(!actLoadFlag)
+	{
+		QuestsCheck(); // в начале квесты, иначе нет перехвата
+		// заполнение фантомами локаций
+		CreateCitizens(location);
+		Treasurer_PortRun(location); // Gregg: рейд казначея по лавке и лоточникам (строго ПОСЛЕ CreateCitizens - лоточники должны существовать)
+		GovSwap_TryDealerOnEnter(location); // делец-подменщик (губ.фрахт) - надёжный хук входа, не гейтится горожанами
+		Campfire_TrySpawn(location); // LEO: костёр рассказчиков в Мариго (надёжный хук - на каждом входе, не гейтится горожанами)
+		CreateHabitues(location);
+		// LEO: капер СТРОГО ПОСЛЕ CreateHabitues - у него CityType="citizen", а CreateHabitues гейтится
+		// isLocationHasCitizens: заспавни раньше - тот увидит "жители есть" и пьянчуг не создаст => таверна пустеет.
+		HiredPirate_TrySpawn(location); // LEO: наёмный пират-капер в таверне (надёжный хук - на каждом входе)
+		CreateIncquisitio(location);
+		CreateMayak(location);
+		CreateBrothels(location);
+		CreatePearlVillage(location);
+		CreateIndianVillage(location);
+		CreateInsideHouseEncounters(location);
+		TwoSistersLusCitizensTurnToDoor(location); // Gregg: зеваки у дома сестёр Лус («Две сестры») стоят лицом к двери
+		CreateInsideResidenceEncounters(location);
+		CreateSkladInsideEncounters(location);
+		CreateJail(location);
+		CreateFortsNPC(location);
+		CreateLostShipsCity(location);
+		CreatPlantation(location); // homo плантация
+		CreatUnderwater(location);
+		CreatTenochtitlan(location);
+		CreatTenochtitlanInside(location);
+		CreatDesMoines(location);
+		LAi_CreateFlowers(location); // Jason: выращиваем травку
+
+		// Lugger -->
+		CreateArenaCitizens(location);
+		CreateCaimanCitizens(location);
+		CreateCaimanGuardingBase(location);
+		CreateCaimanMinesCitizens(location);
+		CreateCaimanPlantationCitizens(location);
+		CreateCaimanShoreSlaves(location);
+		RestoreColonyBuilder(location);	// строитель мог застрять в warrior после драки на берегу
+		GenerateShipWreck(location);
+		// Lugger <--
+
+		//Расставляем квестовых энкоунтеров
+		LAi_CreateEncounters(location); //eddy. монстры не нужны здесь
+		SFcondition (location); // СФ
+		/// ОЗГи
+		LandHunterReactionResult(location);
+		//Скэм
+		CheckForScam(location);
+
+		bool isBloodPrologue = false;
+		if (CheckAttribute(Pchar, "questTemp.CapBloodLine") && Pchar.questTemp.CapBloodLine == true) isBloodPrologue = true;
+		if(bDisableLandEncounters || !CheckAttribute(pchar,"quest.SimulatePGGLife") || isBloodPrologue)
+		{
+			pchar.quest.SimulatePGGLife = true;
+			Log_TestInfo(GetConvertStrWithReplace("Variable_LAi_login_1", "Logs.txt", "#space#", " "));
+		}
+		else
+		{
+			SimulatePGGLife();
+		}
+		SecondChanceRefresh();
+		GenerateSpySeeker(location);
+		if(HasSubStr(location.id,"Crypt") && !HasSubStr(location.id, "Big")) location.id.label = "Crypt";
+
+		PGG_GraveyardCheckIsPGGHere(location);
+		CheckHighOnDrugs();
+		CheckLootCollector();
+		CheckBSFinish(location);
+		GovernorManInviting();
+	}
+	// при загрузке сейва блок энкаунтеров выше пропущен (actLoadFlag) - восстановить боевую связку стычки
+	// банды и патруля (рантайм LAi-групп/условий/авто-подхода вожака в сейв не пишется)
+	if (actLoadFlag) GangWar_RestoreOnLoad(location);
+    Throwing_AssignCompetitor(location);
+}
+
+void CheckBSFinish(ref location)
+{
+	if(!CheckAttribute(pchar, "BSFinish") && sti(pchar.rank) >= 25 && CalculateSquadronPowerPchar() >= 200)
+	{
+		if (CheckAttribute(pchar,"questTemp.BlueBird") && pchar.questTemp.BlueBird == "over")
+		{
+			if (!CheckAttribute(pchar, "BSInProgress"))	{ pchar.BSStart = true; }
+		}
+	}
+	
+	if (LAi_IsCapturedLocation) return;
+	if (chrDisableReloadToLocation) return;
+	if (location.type != "jungle") return;
+	if (LAi_grp_alarmactive == true) return;
+	
+	string typeHunter, sTemp, sCapId;
+	ref    sld;
+	bool   ok;
+	
+	if (CheckAttribute(PChar, "BS_PiratesStoreMassacre") && rand(4) == 1)
+    {
+		if (CheckAttribute(PChar, "BS_MeetWithGatrisOZG") && GetQuestPastTimeParam("BS_MeetWithGatrisOZG") < 1) return;
+		if (CheckAttribute(PChar, "BS_PiratesStoreMassacreDate") && GetQuestPastMonthParam("BS_PiratesStoreMassacreDate") >= 6) DeleteAttribute(PChar, "BS_PiratesStoreMassacre");
+		else SaveCurrentQuestDateParam("BS_MeetWithGatrisOZG");
+		typeHunter = "BShh";
+		sCapId = typeHunter + "LandHunter0";
+		sTemp = "LAND_HUNTER";
+		ok = true;
+		int hhqty = 3 + GetOfficersQuantity(PChar);
+		int irank = 100;
+		if (hhqty > 8) hhqty = 8;
+		for (int i = 1; i <= hhqty; i++) 
+		{			
+			sld = GetCharacter(NPC_GenerateCharacter(sCapId + i, "OZG_" + (rand(9) + 1), "man", "man", irank, ENGLAND, 0, true));
+			if (MOD_SKILL_ENEMY_RATE == 3 && bHardAnimations) sld.model.animation = "man_fast";
+			irank = sti(pchar.rank) + makeint(MOD_SKILL_ENEMY_RATE*sti(PChar.rank)/4) + rand(3);
+			FantomMakeCoolFighterWRankDepend(sld, irank, 55+MOD_SKILL_ENEMY_RATE*15, 55+MOD_SKILL_ENEMY_RATE*15, 100*MOD_SKILL_ENEMY_RATE)
+			sld.name = GetConvertStr("Variable_bountyhunters_0.1", "Names.txt");
+			sld.lastname = "";
+			sld.Dialog.CurrentNode = "First time";
+			sld.dialog.filename = "Hunter_dialog.c";
+			sld.greeting = "Gr_HUNTER";
+			if (bHardBoss) sld.AlwaysReload = true;
+			sld.location = "none";
+			LAi_SetActorTypeNoGroup(sld);
+			LAi_SetCheckMinHP(sld, (LAi_GetCharacterHP(sld) - 1), false, "Battle_Hunters_Land");
+			if (PlaceCharacter(sld, "goto", "random_must_be_near") == "" && i == 1)
+			{
+				ok = false;
+				break;
+			}
+			LAi_ActorFollow(sld, pchar, "", 8.0);
+			LAi_group_MoveCharacter(sld, sTemp);
+		}
+
+		LAi_group_SetRelation(sTemp, LAI_GROUP_PLAYER, LAI_GROUP_NEITRAL);
+		LAi_group_SetRelation(sTemp, LAI_GROUP_PLAYER_OWN, LAI_GROUP_NEITRAL);
+
+		LAi_group_ClearAllTargets();
+		LAi_SetFightModeForOfficers(false);
+		if (ok)
+		{
+	        PChar.HunterCost = 5000*sti(PChar.rank)*MOD_SKILL_ENEMY_RATE + drand(10000);
+			PChar.HunterCost.TempHunterType = typeHunter;
+			PChar.HunterCost.Qty = i;
+			sld = characterFromID(sCapId + "1");
+			LAi_type_actor_Reset(sld);
+			LAi_ActorDialog(sld, pchar, "", 4.0, 0);
+			chrDisableReloadToLocation = true;
+			DoQuestCheckDelay("OpenTheDoors", 5.0);
+		}
+	}
+}
+
+void CheckLootCollector()
+{
+	if (CheckCharacterPerk(pchar, "AboardCollector"))
+	{
+		csmHideLootCollectorBox(true);
+		pchar.CSM.LootCollector.Enable = true;
+		pchar.CSM.LootCollector.CanBeRun = true;
+	}
+}
+void CheckHighOnDrugs()
+{
+	ref chr;
+	int idx;
+	if (CheckAttribute(pchar, "HighOnDrugs"))
+	{
+		if (pchar.sex == "woman")
+		{
+			PlaySound("interface\baba_kxe_kxe.wav");
+		}
+		else
+		{
+			PlaySound("interface\man_kxe_kxe.wav");
+		}
+		pchar.GenQuest.CamShuttle = 1;
+		for(int j = 0; j < LAi_numloginedcharacters; j++)
+		{
+			idx = LAi_loginedcharacters[j];
+			if(idx >= 0)
+			{
+				chr = &Characters[idx];
+				if(!CheckAttribute(chr, "BeforeDrugsModel") && chr.model.animation == "man")
+				{
+					chr.BeforeDrugsModel = chr.model;
+					switch (rand(2))
+					{
+						case 0:
+							chr.model = GetRandSkelModel();
+						break;
+						case 1:
+							chr.model = GetRandSkelModelClassic();
+						break;
+						case 2:
+							chr.model = "Canib_"+(rand(5)+1);
+						break
+					}
+					if (rand(10) == 0)
+					{
+						switch (rand(1))
+						{
+							case 0:
+								chr.model = "PotCMobCap";
+							break;
+							case 1:
+								chr.model = "Canib_boss";
+							break;
+						}
+					}
+					SetNewModelToChar(chr);
+				}
+			}
+		}
+	}
+}
+
+void SecondChanceRefresh()
+{
+	for(int i = 0; i < MAX_CHARACTERS; i++)
+	{
+		ref chr;
+		makeref(chr,Characters[i]);
+		if(CheckAttribute(chr, "id"))
+		{
+			DeleteAttribute(chr, "Adventurers_Luck");
+		}
+		if (CheckAttribute(chr, "model") && findsubstr(chr.model, "ghost" , 0) != -1 )
+		{
+			object persRef = GetCharacterModel(chr);
+			SendMessage(persRef, "ls", MSG_MODEL_SET_TECHNIQUE, "DLightMark");
+		}
+	}
+}
+
+void SimulatePGGLife()
+{
+	if (findsubstr(pchar.location, "_town", 0) != -1 || findsubstr(pchar.location, "_ExitTown", 0) != -1 || findsubstr(pchar.location, "_Bank", 0) != -1 || findsubstr(pchar.location, "_store", 0) != -1 || findsubstr(pchar.location, "_Shipyard", 0) != -1 || findsubstr(pchar.location, "_church", 0) != -1 || findsubstr(pchar.location, "_SecBrRoom", 0) != -1 || findsubstr(pchar.location, "_PortOffice", 0) != -1 || findsubstr(pchar.location, "_Fort", 0) != -1 || findsubstr(pchar.location, "_Dungeon", 0) != -1)
+	{
+		int heroSelected = 1;
+		for (i = 1; i <= PsHeroQty; i++)
+		{
+			sld = CharacterFromID("PsHero_"+i);
+			if (PGG_IsInPlayerTown(sld) && !LAi_IsDead(sld) && sld.PGGAi.location != "Dead")
+			{
+				if (IsCompanion(sld) || IsOfficer(sld) || CheckAttribute(sld, "PGGAi.Task.SetSail") || CheckAttribute(sld, "PGGAi.SeenToday") || sld.sex == "skeleton" || sld.Dialog.CurrentNode == "TreasureHunterPGG")
+				{//фикс - если ПГГ уже выбран для спора за клад
+					continue;
+				}
+				else
+				{
+					if (rand(2) == 0)
+					{
+						heroSelected = 0;
+						pchar.chosenHero = sld.id;
+					}
+				}
+			}
+		}
+		if(heroSelected == 0)
+		{
+			if (findsubstr(pchar.location, "_prison", 0) != -1 || findsubstr(pchar.location, "_townhall", 0) != -1 || findsubstr(pchar.location, "_tavern", 0) != -1 || findsubstr(pchar.location, "_Brothel", 0) != -1)
+			{
+				Log_TestInfo(GetConvertStrWithReplace("Variable_LAi_login_2", "Logs.txt", "#space#", " "));
+			}
+			else
+			{
+				Log_TestInfo(GetConvertStrWithReplace("Variable_LAi_login_3", "Logs.txt", "#space#", " "));
+				sld = CharacterFromID(pchar.chosenHero);
+				LAi_SetActorTypeNoGroup(sld);
+				sld.PGGAi.SeenToday = true;
+				sld.PGGAi.location.town.backup = sld.PGGAi.location.town;
+				sld.PGGAi.location.backup = sld.PGGAi.location;
+				GetCharacterPos(pchar, &locx, &locy, &locz);
+				string locatorPGG = LAi_FindFarLocator("goto", locx, locy, locz);
+				ChangeCharacterAddressGroup(sld, PChar.location, "goto", locatorPGG);
+				ref chr;
+				if (findsubstr(pchar.location, "_town", 0) != -1)
+				{
+					LAi_ActorGoToLocation(sld, "reload", "reload4_back", sld.PGGAi.location.town.backup, "", "", "PGGLeft", -1);
+
+					sld.PGGOfficers = 2+sti(sld.rank)/15;
+					for (i = 0; i < sti(sld.PGGOfficers); i++)
+					{
+						chr = GetCharacter(NPC_GenerateCharacter("PGGOfficer" + i, "officer_" + (rand(42) + 1), "man", "man", sld.rank, PIRATE, 0, true));
+						LAi_SetActorTypeNoGroup(chr);
+						ChangeCharacterAddressGroup(chr, PChar.location, "goto", locatorPGG);
+						LAi_ActorFollow(chr, sld, "", -1);
+						LAi_SetImmortal(chr, true);
+					}
+				}
+				if (findsubstr(pchar.location, "_ExitTown", 0) != -1)
+				{
+					LAi_ActorRunToLocation(sld, "reload", "reload3", sld.PGGAi.location.town.backup, "", "", "PGGLeft", -1);
+
+					sld.PGGOfficers = 2+sti(sld.rank)/15;
+					for (i = 0; i < sti(sld.PGGOfficers); i++)
+					{
+						chr = GetCharacter(NPC_GenerateCharacter("PGGOfficer" + i, "officer_" + (rand(42) + 1), "man", "man", sld.rank, PIRATE, 0, true));
+						LAi_SetActorTypeNoGroup(chr);
+						ChangeCharacterAddressGroup(chr, PChar.location, "goto", locatorPGG);
+						LAi_ActorFollow(chr, sld, "", -1);
+						LAi_SetImmortal(chr, true);
+					}
+				}
+				if (findsubstr(pchar.location, "_Dungeon", 0) != -1)
+				{
+					locatorPGG = LAi_FindNearestFreeLocator2Pchar("monsters")
+					ChangeCharacterAddressGroup(sld, PChar.location, "monsters", locatorPGG);
+
+					sld.PGGOfficers = 2+sti(sld.rank)/15;
+					for (i = 0; i < sti(sld.PGGOfficers); i++)
+					{
+						chr = GetCharacter(NPC_GenerateCharacter("PGGOfficer" + i, "officer_" + (rand(42) + 1), "man", "man", sld.rank, PIRATE, 0, true));
+						LAi_SetActorTypeNoGroup(chr);
+						ChangeCharacterAddressGroup(chr, PChar.location, "monsters", locatorPGG);
+						LAi_ActorFollow(chr, sld, "", -1);
+						LAi_SetImmortal(chr, true);
+					}
+				}
+				if (findsubstr(pchar.location, "_fort", 0) != -1)
+				{
+					LAi_ActorRunToLocation(sld, "reload", LAi_FindNearestLocator("reload", locx, locy, locz), sld.PGGAi.location.town.backup, "", "", "PGGLeft", -1);
+
+					sld.PGGOfficers = 2+sti(sld.rank)/15;
+					for (i = 0; i < sti(sld.PGGOfficers); i++)
+					{
+						chr = GetCharacter(NPC_GenerateCharacter("PGGOfficer" + i, "officer_" + (rand(42) + 1), "man", "man", sld.rank, PIRATE, 0, true));
+						LAi_SetActorTypeNoGroup(chr);
+						ChangeCharacterAddressGroup(chr, PChar.location, "goto", locatorPGG);
+						LAi_ActorFollow(chr, sld, "", -1);
+						LAi_SetImmortal(chr, true);
+					}
+				}
+				LAi_ActorGoToLocation(sld, "reload", LAi_FindNearestLocator("reload", locx, locy, locz), sld.PGGAi.location.town.backup, "", "", "PGGLeft", -1);
+				LAi_SetImmortal(sld, true);
+
+				PChar.quest.PGGWalkEnd.win_condition.l1 = "ExitFromLocation";
+				PChar.quest.PGGWalkEnd.win_condition.l1.location = PChar.location;
+				PChar.quest.PGGWalkEnd.function = "PGGWalkEnd";
+			}
+		}
+	}
+}
+
+void PGGWalkEnd(string qName)
+{
+	if (CheckAttribute(pchar, "chosenHero"))
+	{
+		sld = CharacterFromID(pchar.chosenHero);
+		DeleteAttribute(pchar, "chosenHero");
+		string futureLoc = "none";
+		ChangeCharacterAddress(sld, futureLoc, "");
+		LAi_SetImmortal(sld, false);
+		if (CheckAttribute(sld, "PGGOfficers"))
+		{
+			DeleteAttribute(sld, "PGGOfficers")
+		}
+	}
+}
+
+bool LAi_CharacterLogoff(aref chr)
+{
+	chr.chr_ai.login = false;
+	if(LAi_CheckCharacter(chr, "LAi_CharacterLogoff") == false) return false;
+	LAi_DelLoginedCharacter(chr);
+	string func = chr.chr_ai.type;
+	bool res = true;
+	if(func != "")
+	{
+		func = "LAi_type_" + func + "_CharacterLogoff";
+		res = call func(chr);
+	}
+	if(res == false) return false;
+	return true;
+}
+
+void LAi_AddLoginedCharacter(aref chr)
+{
+	int index = sti(chr.index);
+	LAi_loginedcharacters[LAi_numloginedcharacters] = index;
+	LAi_numloginedcharacters = LAi_numloginedcharacters + 1;
+}
+
+void LAi_DelLoginedCharacter(aref chr)
+{
+	int index = sti(chr.index);
+	for(int i = 0; i < LAi_numloginedcharacters; i++)
+	{
+		if(LAi_loginedcharacters[i] == index)
+		{
+			LAi_loginedcharacters[i] = LAi_loginedcharacters[LAi_numloginedcharacters - 1];
+			LAi_numloginedcharacters = LAi_numloginedcharacters - 1;
+		}
+	}
+	if(LAi_numloginedcharacters < 0) LAi_numloginedcharacters = 0;
+}
+
+bool LAi_login_CheckTime(float start, float end)
+{
+	float curTime = GetTime();
+	if(start <= end)
+	{
+		if((curTime >= start) && (curTime <= end)) return true;
+	}else{
+		if(curTime >= start) return true;
+		if(curTime <= end) return true;
+	}
+	return false;
+}
+
+void LAi_PostLoginInit(aref chr)
+{
+	if(!IsEntity(chr)) return;
+	//Добавляем в группу
+	LAi_group_MoveCharacter(chr, chr.chr_ai.group);
+	//Инициализируем шаблон
+	string func = chr.chr_ai.tmpl;
+	if(func != "")
+	{
+		func = "LAi_tmpl_" + func + "_InitTemplate";
+		bool res = call func(&chr);
+		if(res == false)
+		{
+			chr.chr_ai.tmpl = LAI_DEFAULT_TEMPLATE;
+		}
+	}
+	//Инициализируем тип
+	func = chr.chr_ai.type;
+	if(func != "")
+	{
+		func = "LAi_type_" + func + "_Init";
+		call func(&chr);
+	}
+}
+//Евент с искателем лазутчиков Lipsar//
+void GenerateSpySeeker(ref location)
+{
+	bool bOK = 	CheckAttribute(pchar, "GenQuest.questName") && pchar.GenQuest.questName != "SeekSpy";
+	bool bOK2 = !CheckAttribute(pchar, "GenQuest.questName");
+	if(!CheckAttribute(pchar, "SpySeeker.dayrandom")) pchar.SpySeeker.dayrandom = 0;
+
+	if (CheckAttribute(Pchar, "questTemp.CapBloodLine") && Pchar.questTemp.CapBloodLine == true) return;
+	if(HasSubStr(location.id, "Common") && rand(1000) > 750 && pchar.dayrandom != pchar.SpySeeker.dayrandom && !HasSubStr(location.id, "Crypt") && !HasSubStr(location.id, "Packhouse") && GetCityNation(location.fastreload) != 4 && Characters[GetFortCommanderIDX(colonies[findcolony(location.fastreload)].id)].fort.mode != FORT_DEAD)
+	{
+		if(bOK || bOK2)
+		{
+			if (MOD_SKILL_ENEMY_RATE == 3 && bHardAnimations) ref rChar = GetCharacter(NPC_GenerateCharacter("SpySeeker", "officer_"+ (1 + drand(42)), "man", "man_fast", pchar.rank, GetCityNation(location.fastreload), -1, false)); //LEO: Превозмогаторам страдание 08.12.2021
+			else rChar = GetCharacter(NPC_GenerateCharacter("SpySeeker", "officer_"+ (1 + drand(42)), "man", "man", pchar.rank, GetCityNation(location.fastreload), -1, false));
+			rChar.Dialog.FileName = "Common_Seeker.c";
+			LAi_SetImmortal(rChar, true);
+			rChar.saveItemsForDead = true;
+			SetCharacterPerk(rChar, "Fencer");
+			if (bHardBoss) rChar.AlwaysReload = true;//перезарядка независимо от Дозарядки
+			FantomMakeCoolFighter(rChar, sti(pchar.rank), sti(PChar.skill.Fencing), sti(PChar.skill.Pistol), BLADE_LONG, "pistol3",100);
+			int iRel = GetNationRelation(GetCityNation(location.fastreload), GetBaseHeroNation());
+			if(iRel == RELATION_ENEMY) pchar.SpySeeker = "Enemy";
+			else pchar.SpySeeker = "Friend";
+			if (CheckAttribute(location, "locators.goto")) {
+				aref tmpAref;
+				makearef(tmpAref, location.locators.goto);
+				Log_TestInfo(PlaceCharacter(rChar, "goto", "random"));
+			} else {
+				Trace("not found locators for location: "+location.name)
+				return;
+			}
+			LAi_SetActorType(rChar);
+			LAi_ActorDialogDelay(rChar, PChar, "", 2.0);
+			rChar.Dialog.CurrentNode = "FirstTime";
+			pchar.SpySeeker.dayrandom = pchar.dayrandom;
+			AddItems(rChar, "Lockpick", 2 + rand(2));
+			chrDisableReloadToLocation = true;
+		}
+	}
+}
+//Евент с искателем лазутчиков Lipsar//
+void GovernorManInviting()
+{
+	if (FindCharacterItemByGroup(Pchar, PATENT_ITEM_TYPE) != "") return;
+	if (LAi_IsCapturedLocation) return;
+	if (chrDisableReloadToLocation) return;
+	if (LAi_grp_alarmactive == true) return;
+	int ichar;
+	ref rChar;
+	string sNationname, sNationShortname;
+	for(int i = 0; i < 4; i++)
+	{
+		sNationname = GetNationNameByType(i);
+		if (CheckAttribute(pchar, sNationname+".quest.mayor") && sti(pchar.(sNationname).quest.mayor) >= 10 && findsubstr(pchar.location, "_town", 0) != -1 && sti(pchar.(sNationname).quest.mayor.done) == 0 && sti(Colonies[FindColony(GetCurrentTown())].nation) == i)
+		{
+			sNationShortname = NationShortName(i);
+			rChar = CharacterFromID(sNationShortname + "_guber");
+			if (rChar.Dialog.Filename != "Common_Governor.c") return;
+			iChar = NPC_GenerateCharacter(sNationname+"_Governor_Man", "off_"+NationShortName(i)+"_1", "man", "man", sti(pchar.rank), i, 1, 0);
+			rChar = GetCharacter(iChar);
+			rChar.nation = i;
+			rChar.dialog.filename = "Governor_Man.c";
+			LAi_Setimmortal(rChar, true);
+			ChangeCharacterAddressGroup(rChar, pchar.location, "reload", LAi_FindNearestFreeLocator2Pchar("reload"));
+			LAi_SetActorType(rChar);
+			chrDisableReloadToLocation = true;
+			LAi_ActorDialog(rChar, pchar, "", 15.0, 1.0);
+		}
+	}
+}

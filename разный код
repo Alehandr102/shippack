@@ -1,0 +1,175 @@
+////////////////////////////////////////////////////////////////////////////////
+string descF52 = "Штурман + 100 в Скиллы. Нажать F2 и Распределить";
+void CalculateInfoDataF52()
+{
+totalInfo = descF52;
+
+if (sti(pchar.Fellows.Passengers.navigator) != -1)
+{
+ref chr = GetCharacter(sti(pchar.Fellows.Passengers.navigator));
+Log_SetStringToLog("( .Штурман + 100 в Скиллы. Нажать F2 и Распределить Штурману Куда Нужно. )");
+chr.Skill.FreeSkill  = sti(chr.Skill.FreeSkill) + 100;
+    }
+    else
+    {
+    totalInfo = "Нет Назначенного Штурмана.";
+    }
+PlaySound("interface\key.wav");
+totalInfo = totalInfo + NewStr() + NewStr() +
+"Чит работает нормально!";
+SetFormatedText("INFO_TEXT",totalInfo);
+}
+//////////////////////////////////////////////////////////////////////////////// для кнопки дебагера качалка назначенного штурмана.
+HardCoffee — Вчера, в 20:21
+пропробуй назначить её штурманом и вот это прописать: (в PROGRAM\Debuger.c) Добавит по 2 личных и корабельных свободных перка
+void ActiveF12Control()
+{
+    if (sti(pchar.Fellows.Passengers.navigator) != -1)
+    {
+        ref chr = GetCharacter(sti(pchar.Fellows.Passengers.navigator));
+        chr.perks.FreePoints_self = 2;
+        chr.perks.FreePoints_ship = 2;
+    }
+}
+
+к примеру качалка для маруси
+
+
+sld = characterFromId("Mary");
+SetRandSPECIAL(sld) ;                    
+SetSPECIAL(sld, 10, 8, 10, 8, 8, 8, 8);
+SetSelfSkill(sld, 50, 50, 50, 50, 50);
+SetShipSkill(sld, 50, 50, 50, 50, 100, 50, 50, 50, 50);      
+LAi_NPC_EquipPerk(sld, "fantom");                             
+LAi_SetHP(sld, 500.0, 500.0);
+
+//=Фольке Делюк разрешить быть компаньоном
+sld = characterFromId("Folke");
+sld.CompanionDisable = false;
+//=Тичингиту разрешить быть компаньоном
+sld = characterFromId("Tichingitu");
+sld.CompanionDisable = false;
+
+а это для Фулька и Тичингиту разрешение быть компаньонами и назначение капитанами.
+
+Вот, кстати, спасибо за функцию
+```c++
+ref GetCharacter(int iIndex) 
+```
+Очень нужная!
+
+Хз, в интерфейс дебаггера никогда не лазил, все нужные мне коды пишу в F12:
+например:
+```c++
+void ActiveF12Control()
+{
+    if (sti(pchar.Fellows.Passengers.navigator) != -1)
+    {
+        ref chr = GetCharacter(sti(pchar.Fellows.Passengers.navigator));
+        chr.perks.FreePoints_self = 2;
+        chr.perks.FreePoints_ship = 2;
+    }
+}
+```
+
+Описание структуры каталогов PROGRAM
+Сообщение Rasteador » 05 дек 2017, 01:40
+
+Автор: ALexusB
+Дополнение и адаптация для ГПК: Rasteador
+
+PROGRAM\ - общий код, модуль начала игры
+
+PROGRAM\battle_interface\ - скрипты главных интерфейсов на суше и море, быстрые переходы
+PROGRAM\cannons\ - инициация и методы пушек
+PROGRAM\characters\ - инициация персонажей и модули управления ими + форты + генератор фантомов
+PROGRAM\colonies\ - инициация колоний в игре
+PROGRAM\controls\ - настройки клавиш
+PROGRAM\dialogs\ - скрипты диалогов по городам и генераторы + квесты
+PROGRAM\Encounters\ - события на карте
+PROGRAM\interface\ - скрипты вызываемых интерфейсов
+PROGRAM\islands\ - инициация островов: импортируемые/экспортируемые товары, товары-контрабанда, "Доплыть до" - бухты, побережья, маяки т.п.
+PROGRAM\ITEMS\ - инициация предметов
+PROGRAM\Loc_ai\ - все АИ на суше, включая боевки и абордаж: расчеты урона, вызов звуков, расчеты во время абордажа и т.п.
+PROGRAM\locations\ - инициация локаций и модуль управления загрузгой НПС в них
+PROGRAM\nations\ - инициация и модули наций (отношения, матрицы отношений)
+PROGRAM\net\ - мультиплеерные скрипты, перекочевало из К3, в ГПК и ККС не используется
+PROGRAM\quests\ - обработчики квестовых событий и модули управления событиями
+PROGRAM\scripts\ - прочие скрипты: генератор Золотого флота, генератор эскадр, генератор кладов, генератор слухов и т.п.
+PROGRAM\sea_ai\ - АИ на море (все, что с кораблями) + переход в каюту, трюм, палубу
+PROGRAM\ships\ - инициация типов кораблей
+PROGRAM\store\ - модуль управления магазинами (цены, товары)
+PROGRAM\Weather\ - инициация погоды и смена погоды
+PROGRAM\worldmap\ - глобальная карта (коорд на ней, загрузка, события)
+
+RESOURCE\ - все ресурсы игры
+RESOURCE\INI\INTERFACES\ - дизайны интерфейса (расположение кнопок, иконки и тд)
+
+void ActiveF12Control()
+{
+    if(LoadSegment("store\initGoods.c"))
+    {
+        InitGoods();
+        UnloadSegment("store\initGoods.c");
+        Log_info ("initGoods.c обновлён");
+    }
+}
+
+Link.l14 = RandPhraseSimple("Не сейчас. Нет времени.", "Некогда. Дела ждут.");
+			//LAi_SetImmortal(pchar, false);
+			//pchar.ship.cannons.type = 19;
+			//pchar.money = 400000;
+			//pchar.Ship.Crew.Quantity = 200;
+			//GiveItem2Character(pchar, "jewelry11");
+			//for(i = 0; i < 600; i++) GiveItem2Character(pchar, "jewelry11");
+			log_info("IMMORTAL");
+			ShipsInit();
+			/* worldMap.playerShipActionRadius = 70.0;
+			worldMap.enemyshipViewDistMin = 400.0;		//Растояние на котором корабль начинает исчезать
+			worldMap.enemyshipViewDistMax = 600.0;		//Растояние на котором корабль исчезает полностью
+			worldMap.enemyshipBrnDistMin = 400.0;		//Минимальное растояние на котором рожается корабль
+			worldMap.enemyshipBrnDistMax = 600.0;		//Максимальное растояние на котором рожается корабль */
+			//ref shTo;
+			//shTo = &RealShips[sti(Pchar.Ship.Type)];
+			//shTo.capacity = 5879;
+			//shTo.fcannon = 2;
+			//shTo.rcannon = 17;
+			//shTo.lcannon = 17;
+			//pchar.skill.Commerce = 95;
+			//pchar.skill.Sailing = 30;
+			//pchar.skill.FencingLight = 85;
+			//pchar.skill.FencingHeavy = 95;
+			//pchar.Reputation = 95;
+			pchar.skill.Pistol = 95;
+			//pchar.skill.Fencing = 95;
+			//pchar.ship.cargo.goods.Cannon_24 = 110;
+			//TakenItems(Pchar, "Lockpick", 600);
+			//pchar.skill.freespecial = 0;
+			//SetCharacterPerk(pchar, "SharedExperience");
+			//SetCharacterPerk(pchar, "Doctor1");
+            //SetCharacterPerk(pchar, "Doctor2");
+			//SetCharacterPerk(pchar, "EmergentSurgeon");			
+			//SetCharacterPerk(pchar, "FlagEng");
+			//SetCharacterPerk(pchar, "FlagFra");
+			//SetCharacterPerk(pchar, "FlagSpa");
+			//SetCharacterPerk(pchar, "FlagHol");
+			Link.l14.go = "exit";
+			
+			
+			
+			
+			
+			Находите seadogs.c
+Изображение
+2.Ищите там вот эту вот строчку
+Изображение
+комментируете или удаляет чек на MOD_SKILL_ENEMY_RATE == 3 и чуть ниже || ControlName == "TimeScaleSlowerBA")
+ 
+Изображение
+!!!!!!!!!! не забудьте злоебучую точку с запятой
+
+Здравствуйте, извините что пишу лично не в чате, если сможете помогите, вы же в скриптах разбираетесь? Я играю в ши пак, у лоточников цена продажи в 10 раз меньше чем цена покупки, где поправить это, уже все глаза проглядел
+HardCoffee — 25.03.2025, 07:22
+Приветствую!
+Program\INTERFACE\interface_utils.c
+функция:   int GetTradeItemPrice(string sItemID, int tradeType)

@@ -1,0 +1,1025 @@
+Чит-коды к игре Корсары: Город Потерянных Кораблей. 
+
+Подходят 
+-к Корсарам : Возвращение Легенды любых версий и патчей. 
+
+-к Корсарам : Возвращение Легенды версии 1.2.3 Hardcore Edition 
+
+-к Корсарам: ГПК только до патча 1.2. В 1.2 F5 не вызывается подобным методом. 
+
+Нижеприведенные команды являются тестерскими командами, потому никаких сбоев быть не должно. Также это никак не повлияет на возможные обращения по техническим проблемам. Достаточно перед сейвом вернуть изменяемые значения на место. 
+
+Инструкция по использованию кодов для игры Корсары: Город Потерянных Кораблей (ГПК) 
+
+1. Установите "оконный" режим игры. Для этого в директории с игрой откройте файл config.exe и поставьте соответственно галочку в менюшке. 
+2. В engine.ini (который находится в папке с игрой) изменить 
+
+debugwindow = 0 меняем на debugwindow = 1. После чего заходим в игру жмем F5 и вводим коды. 
+
+Теперь вводим нужные команды, переключаемся между окнами и смотрим чего изменили smile.gif 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+КОДЫ ДЛЯ КОРСАРОВ: ГОРОД ПОТЕРЯНЫХ КОРАБЛЕЙ. 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ПИРАТЕС: 
+
+P.I.R.A.T.E.S. и другие характеристики персонажа, холодного и огнестрельного оружия: 
+
+Для изменения PIRATES, в левой колонке вводим: 
+pchar.skill.freespecial - для изменения очков ПИРАТЕС у ГГ 
+characters[i].skill.freespecial - для офицеров и других людей/персонажей (заместо i вводим индекс нужного перса, как его найти описано выше) 
+В правой колонке получим значение 0, меняем его на любую другую желаемую цифру - получаем очки ПИРАТЕС, которые можно распределить на любые умения как в начале игры. Например введя 6 получим 6 дополнительных очков ПИРАТЕС. Если по каким-либо причинам хотим наоборот понизить значения, то также вводим например 1 в правой колонке, уменьшаем и затем вновь выставляем ноль. 
+
+Разное: 
+
+characters[i].chr_ai.charge - на сколько зарядов заряжен ствол 
+characters[i].chr_ai.charge_max - максимальное количество зарядов в стволе 
+characters[i].chr_ai.charge_dlt - скорость зарядки ствола 
+(сделай себе пулемет из дешевого пистолета) 
+characters[i].chr_ai.dmggunmin - минимальное повреждение от ствола 
+characters[i].chr_ai.dmggunmax - максимальное повреждение от ствола 
+characters[i].chr_ai.dmgbldmin - минимальное повреждение от клинка 
+characters[i].chr_ai.dmgbldmax - максимальное повреждение от клинка 
+characters[i].chr_ai.hp_dlt - скорость восстановления здоровья 
+characters[i].chr_ai.energymax - максимальный уровень энергии, НО из-за того, что этот параметр вычисляемый, введенное значение будет работать (полоска энергии станет соответствовать введенному значению) только до следующего его расчета (а рассчитывается максимальный уровень энергии при каждом нажатии F2) 
+Ну, а в правой колонке после ввода читов экспериментируем с увеличением цифровых значений, но не переусердствуйте 
+Внимание, все параметры установленные этими кодами сбрасываются при смене вооружения!
+
+ИЗМЕНЕНИЕ ХАРАКТЕРИСТИК КОРАБЛЯ: 
+
+Спойлер: 
+В левой части: 
+[N]- № Корабля...его можно узнать набрав pchar.ship.type...в правой части появиться номер корабля. 
+RealShips[N].speedrate
+RealShips[N].turnrate - маневренность 
+RealShips[N].maxcrew - максимальная команда с перегрузом 
+RealShips[N].mincrew - минимальная команда 
+RealShips[N].capacity - вместимость трюма 
+RealShips[N].weight - масса корабля без груза и команды (влияет на инерцию рассчитываемую движком игры) это чтоб не заносило на поворотах 
+RealShips[N].HP - корпус 
+RealShips[N].optcrew - оптимальная команда (без перегруза) 
+RealShips[N].cannon - максимальный тип орудий для установки на борту (тип орудий смотреть в спойлере "Энергия, репутация, калибр орудий, ранг, здоровье, деньги, бессмертие:") 
+RealShips[N].maxcaliber - это значение будет отображаться в характеристиках корабля как максимальный калибр орудий (но нужно ввести предыдущий чит, иначе поставить вы его всё равно не сможете) 
+RealShips[N].WindAgainstSpeed - бейдевинд 
+RealShips[N].Stolen - 1 = ваш корабль имеет статус "захвачен", 2 = ваш корабль имеет статус "куплен" (влияет на стоимость продажи) 
+RealShips[N].Ship.Upgrades.Sails - текстура парусов 1-3 (1 = parus_common (обычные паруса), 2 = parus_pat, 3 = parus_silk (шёлковые паруса)) 
+PChar.Ship.Upgrades.Sails - тоже самое только для корабля ГГ 
+RealShips[N].Ship.Upgrades.Hull - текстура корпуса 1-3 (у одного корабля 3 вида текстур из папки с игрой) 
+PChar.Ship.Upgrades.Hull - тоже самое только для корабля ГГ 
+RealShips[N].SpeedDependWeight - влияние загруженности трюма на скорость корабля (0 = загруженность не влияет на скорость, т.е. скорость остаётся максимальной вне зависимости от загруженности трюма) 
+RealShips[N].TurnDependWeight - влияние загруженности трюма на манёвренность корабля. (0 = Загруженность не влияет на манёвренность) 
+В правой видим текущее значение и заменяем его на желаемое, нажимаем Ентер, наслаждаемся... 
+
+Degree2Radian(X) - где Х угол в градусах, получим угол в радианах 
+Теперь realships[N].cannons.borts.cannonf.firezone - угол поражения из носовых орудий (вводить в радианах полученных функцией описанной выше) 
+realships[N].cannons.borts.cannonb.firezone - угол поражения кормовых орудий 
+realships[N].cannons.borts.cannonl.firezone - угол поражения левого борта 
+realships[N].cannons.borts.cannonr.firezone - угол поражения правого борта 
+realships[N].cannons.borts.cannonf.firedir - угол отклонения зоны поражения (тоже в радианах отсчитываем от 0 т.е. носа корабля по часовой стрелке) для носовых орудий 
+realships[N].cannons.borts.cannonb.firedir - угол отклонения зоны поражения для кормовых (здесь угол по умолчанию равен 180 градусов = 3.14 в радианах т.е. числу Pi) 
+realships[N].cannons.borts.cannonl.firedir - угол отклонения зоны поражения для левого борта 
+realships[N].cannons.borts.cannonr.firedir - - угол отклонения зоны поражения для правого борта 
+А смысл отклонения зоны обстрела в том, что можно сместить зону обстрела бортовых орудий в сторону носа и тем самым давать залп сразу с двух бортов и носовых орудий. Что-то типа современных корабельных орудий на вращающихся платформах =) 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ХАРАКТЕРИСТИКА: 
+
+pchar.skill.Leadership - Авторитет. 
+pchar.skill.FencingLight - Умение обращаться с легким оружием 
+pchar.skill.Fencing - Способность управляться с саблями 
+pchar.skill.FencingHeavy - Владение тяжелыми палашами, топорами и мечами 
+pchar.skill.Pistol – Пистолеты 
+pchar.skill.Fortune - Фортуна. Она же - везение. 
+pchar.skill.Sneak - Скрытность 
+pchar.skill.Sailing - Навигация. 
+pchar.skill.Accuracy - Меткость 
+pchar.skill.Cannons - Орудия 
+pchar.skill.Grappling - Абордаж 
+pchar.skill.Defence - Защита 
+pchar.skill.Repair - Починка 
+pchar.skill.Commerce - Торговля 
+pchar.rank - ранг 
+pchar.Reputation - Репутация 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+LAi_SetImmortal(pchar, true) - бессмертие 
+LAi_SetImmortal(pchar, false) - отключение бессмертия 
+pchar.rank - уровень героя 
+LAi_SetLevelHP(pchar) - здоровье в соответствии с уровнем героя 
+AddMoneyToCharacter(pchar, кол-во денег) - деньги 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ПРЕДМЕТЫ ГЛАВНОГО ГЕРОЯ: 
+
+GiveItem2Character(pchar, "предмет") 
+Список некоторых предметов: 
+GiveItem2Character(pchar, "blade1-35") - мечи 
+GiveItem2Character(pchar, "topor1-3") - топоры 
+GiveItem2Character(pchar, "toporAZ") - Макуауитль, самая мощная хреновина в игре 
+GiveItem2Character(pchar, "pistol1-6") - пистолеты 
+GiveItem2Character(pchar, "mushket") - мушкетон 
+questMushket 
+GiveItem2Character(pchar, "pistol7") - шотган 
+GiveItem2Character(pchar, "cirass1-5") - кирасы 
+GiveItem2Character(pchar, "spyglass1-5")- телескопы 
+GiveItem2Character(pchar, "potion1") - лечебное зелье 
+GiveItem2Character(pchar, "potion2") - элексир 
+GiveItem2Character(pchar, "potion3") - противоядие 
+GiveItem2Character(pchar, "suit_1")- обноски, одежда купца, одежда дворянина 
+GiveItem2Character(pchar, "suit_2")- одежда купца, 
+GiveItem2Character(pchar, "suit_3") - одежда дворянина 
+GiveItem2Character(pchar, "indian11") - крысины бог - крысы на корабле больше ничего не жрут 
+GiveItem2Character(pchar, "bullet") - пули 
+GiveItem2Character(pchar, "ShipyardsMap") - чертеж который поручают достать на верфи 
+GiveItem2Character(pchar, "map_LSC") - карта ГПК 
+GiveItem2Character(pchar, "gold") - золото 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ТОРГОВЫЕ ЛИЦЕНЗИИ: 
+
+GiveItem2Character(pchar,"EngTradeLicence") - англ. торговая лицензия 
+GiveItem2Character(pchar,"FraTradeLicence") - франц. торговая лицензия 
+GiveItem2Character(pchar,"SpaTradeLicence") - исп. торговая лицензия 
+GiveItem2Character(pchar,"HolTradeLicence") - гол. торговая лицензия 
+П.С. В колониях нам изо дня в день будут говорить, что лицензии осталось служить всего день 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ТОТЕМЫ: 
+
+GiveItem2Character(pchar, "Totem_1") 
+GiveItem2Character(pchar, "Totem_2") 
+GiveItem2Character(pchar, "Totem_3") 
+GiveItem2Character(pchar, "Totem_4") 
+GiveItem2Character(pchar, "Totem_5") 
+GiveItem2Character(pchar, "Totem_6") 
+GiveItem2Character(pchar, "Totem_7") 
+GiveItem2Character(pchar, "Totem_8") 
+GiveItem2Character(pchar, "Totem_9") 
+GiveItem2Character(pchar, "Totem_10") 
+GiveItem2Character(pchar, "Totem_11") 
+GiveItem2Character(pchar, "Totem_12") 
+GiveItem2Character(pchar, "Totem_13") 
+GiveItem2Character(pchar, "Totem_14") 
+GiveItem2Character(pchar, "Totem_15") 
+
+Totem_1 - Тотем Шочикецаль. (+20 везение) 
+Totem_2 - Тотем Миктлантекутли. (+20 скрытность) 
+Totem_3 - Тотем Кецалькоатля(+20 защита) 
+Totem_4 - Тотем Мишкоатля. (+20 меткость) 
+Totem_5 - Тотем Тескатлипока. (+20 пистолеты) 
+Totem_6 - Тотем Чалчиуитликуэ. (+20 авторитет) 
+Totem_7 - Тотем Уицилопочтли. (+20 среднее оружие) 
+Totem_8 - Тотем Тлалока. (+20 легкое оружие) 
+Totem_9 - Тотем Майяуэль. (+20 тяжелое оружие) 
+Totem_10 - Тотем Тонакатекутли. (+20 торговля) 
+Totem_11 - Тотем Камаштли. Камаштли, бог звёзд, охоты, войны и судьбы. Творец огня. 
+Totem_12 - Тотем Синтеотля. (+20 к навигации) 
+Totem_13 - Тотем Тласолтеотль. Богиня, очищает от недозволенных страстей 
+Totem_14 - Тотем Тонатиу. Тонатиу, бог неба и солнца. 
+Totem_15 - Тотем Шипе-Тотеку. (+20 к починке) 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""2 
+ЧЕРЕПА,СТАТУЭТКИ,АМУЛЕТЫ И ПРОЧЕЕ......... 
+
+Спойлер: 
+GiveItem2Character(pchar, "sculMa1") - Белый хрустальный череп 
+GiveItem2Character(pchar, "sculMa2") - Розовый хрустальный череп 
+GiveItem2Character(pchar, "sculMa3") - Голубой хрустальный череп 
+GiveItem2Character(pchar, "indian1") - Идол Акамапичтли. (+10 авторитет и скрытность, -20 пистолеты). 
+GiveItem2Character(pchar, "Indian5") - Статуэтка Кошкоштли. (+10 скрытность) 
+GiveItem2Character(pchar, "indian10") - Идол Чак-Моона. (+20 пистолеты, +10 меткость, -20 скрытность) 
+GiveItem2Character(pchar, "indian12") - Изображение воина-ягуара. (+10 тяжелое оружие) 
+GiveItem2Character(pchar, "indian14") - Изображение Йакатекухт-ли. (+20 торговля, -20 авторитет). 
+GiveItem2Character(pchar, "indian19") - Статуэтка Ачкуацина. (+20 меткость, +10 орудия, -20 скрытность) 
+GiveItem2Character(pchar, "indian22") - Атлантический воин. (+20 защита, +10 легкое оружие, -10 авторитет и везение) 
+GiveItem2Character(pchar, "indian15") - Большой каменный диск. (+10 авторитет и защита, -10 везение) 
+GiveItem2Character(pchar, "indian18") - Идол древнего божества. (+20 навигация, -20 скрытность 
+GiveItem2Character(pchar, "indian17") - Статуэтка собаки. (+10 скрытность) 
+GiveItem2Character(pchar, "indian11") - Крысиный бог (нет крысам на корабле) 
+GiveItem2Character(pchar, "indian6") - Диск Чимальпопоку. (+10 среднее оружие) 
+GiveItem2Character(pchar, "indian7") - Идол Великой Матери. (+10 к везению) 
+GiveItem2Character(pchar, "statue1") - Каменная маска (+30 ремонт). 
+GiveItem2Character(pchar, "jewelry4") - Изумруд (+10 авторитет) 
+GiveItem2Character(pchar, "jewelry8") - Бронзовое кольцо (+10 везение) 
+GiveItem2Character(pchar, "jewelry9") - Бронзовый крестик (+10 к везению) 
+GiveItem2Character(pchar, "jewelry15") - Изумрудные подвески (+10 к скр 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+КЛЮЧИ: 
+
+GiveItem2Character(pchar, "ххх") где ххх это: 
+GiveItem2Character(pchar, "Key1" - ключ для простого замка (простой ключ) 
+GiveItem2Character(pchar, "Key2" - ключ для обычных замков средней сложности (обычный ключ) 
+GiveItem2Character(pchar, "Key3" - ключ для сложных замков (сложный ключ) 
+GiveItem2Character(pchar, "keyPanama" - ключ от сундука в резиденции Панамы 
+GiveItem2Character(pchar, "keyQuestLSC" - ключ от сундука генерал-губернатора Кюрасао Петера Стэвезанта 
+GiveItem2Character(pchar, "keyPanama_LSC" - ключ адмирала (утерянный адмиралом ключ) 
+GiveItem2Character(pchar, "keyQuestLSC_Tizer" - Таинственный ключ Тизера Дэна якобы с загадочного Острова. Зачем он нужен - неизвестно. 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+КАРТЫ АРХИПЕЛАГА: 
+
+GiveItem2Character(pchar, "map_normal") - обычная карта 
+GiveItem2Character(pchar, "map_LSC")- карта ГПК 
+GiveItem2Character(pchar, "map_Pearl")- карта жемчужных промыслов 
+GiveItem2Character(pchar, "map_beliz")- карта Белиза 
+GiveItem2Character(pchar, "map_santa")- карта Санта-Католины 
+GiveItem2Character(pchar, "map_jam")- карта Ямайки 
+GiveItem2Character(pchar, "map_cuba")- карта Кубы 
+GiveItem2Character(pchar, "map_hisp")- карта Эспаньолы 
+GiveItem2Character(pchar, "map_antigua")- карта Антигуа 
+GiveItem2Character(pchar, "map_barbados")- карта Барбадоса 
+GiveItem2Character(pchar, "map_cayman")- карта Каймана 
+GiveItem2Character(pchar, "map_Curacao")- карта Кюросао 
+GiveItem2Character(pchar, "map_guad")- карта Гваделупы 
+GiveItem2Character(pchar, "map_TORTUGA")- карта Тортуги 
+GiveItem2Character(pchar, "map_dominica")- карта Доминики 
+GiveItem2Character(pchar, "map_martiniqua")- карта Мартиники 
+GiveItem2Character(pchar, "map_trinidad")- карта Тринидад и Тобаго 
+GiveItem2Character(pchar, "map_nevis") - карта Невиса 
+GiveItem2Character(pchar, "map_sm")- карта Сан Мартина 
+GiveItem2Character(pchar, "map_terks")- карта Тёркса 
+GiveItem2Character(pchar, "map_maine_1")- карта запад Мейна 
+GiveItem2Character(pchar, "map_maine_2")- карта юг Мейна 
+GiveItem2Character(pchar, "map_panama")- карта Панамы 
+GiveItem2Character(pchar, "map_maracaibo")- карта центра Мейна 
+GiveItem2Character(pchar, "map_cumana")- карта Куманы 
+GiveItem2Character(pchar, "map_puerto")- карта Пуэрто Рико 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+pchar.chr_ai.energy - Энергия ГГ 
+pchar.Ship.Crew.Quantity - команда корабля ГГ 
+pchar.Ship.HP - корпус корабля ГГ 
+Чит на мораль pchar.ship.crew.morale 
+pchar.Ship.SP – паруса в процентах корабля ГГ; 
+pchar.chr_ai.charge - заряды оружия ГГ (1.0 один ствол полностью заряжен 2.0 два ствола полностью заряжены) и 
+pchar.chr_ai.charge_max - максимум зарядов максимальное значение которое может быть отображено 6 (что будет если выставить больше не проверял); 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+опыт матросов - pchar.Ship.crew.exp.sailors; 
+опыт канониров - pchar.Ship.crew.exp.Cannoners; 
+опыт солдат - pchar.Ship.crew.exp.soldiers. 
+pchar.ship.Crew.EXP – опыт команды 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ЛИЧНЫЕ СПОСОБНОСТИ ГЛАВНОГО ГЕРОЯ: 
+
+В левой части пишем pchar.perks.list.N, где N - название перка, который вы хотите себе добавить. В правой части заменяем "error" на 1. 
+Важно: способности добавленные таким способом начинают действовать только после смены локации. Например, после перехода из дома на улицу. 
+
+Итак пишем pchar.perks.list.N, где N это: 
+
+pchar.perks.list.BasicDefense - Навык основной защиты 
+pchar.perks.list.AdvancedDefense - Навык продвинутой защиты 
+pchar.perks.list.CriticalHit - Критический удар 
+pchar.perks.list.Ciras - Кираса 
+pchar.perks.list.SwordplayProfessional - Профессиональный фехтовальщик 
+pchar.perks.list.Grus - Дополнительный вес 
+pchar.perks.list.Rush - Берсерк 
+pchar.perks.list.Tireless - Неутомимость 
+pchar.perks.list.HardHitter - Тяжелая рука 
+pchar.perks.list.BladeDancer - Танец с саблями 
+pchar.perks.list.Sliding - Неотразимый удар 
+pchar.perks.list.Gunman - Стрелок 
+pchar.perks.list.GunProfessional - Меткий стрелок 
+pchar.perks.list.IronWill - Железная воля 
+pchar.perks.list.SharedExperience - Обмен опытом 
+pchar.perks.list.Medic - Отменное здоровье 
+pchar.perks.list.HPPlus - Растущая жизнь 
+pchar.perks.list.EnergyPlus - Растущая энергия 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+КОРАБЕЛЬНЫЕ СПОСОБНОСТИ ГЛАВНОГО ГЕРОЯ: 
+
+pchar.perks.list.Trustworthy - Вызывающий доверие 
+pchar.perks.list.ShipEscape - Спасение на шлюпке 
+pchar.perks.list.FastReload - Быстрая перезарядка 
+pchar.perks.list.ImmediateReload - Предварительная перезарядка 
+pchar.perks.list.HullDamageUp - Увеличенные повреждения корпусу 
+pchar.perks.list.SailsDamageUp - Увеличенные повреждения парусам 
+pchar.perks.list.CrewDamageUp - Увеличенные повреждения команде 
+pchar.perks.list.CriticalShoot - Критический выстрел 
+pchar.perks.list.LongRangeShoot - Увеличенное расстояние выстрела 
+pchar.perks.list.CannonProfessional - Профессиональный канонир 
+pchar.perks.list.LongRangeGrappling - Абордаж с большого расстояния 
+pchar.perks.list.MusketsShoot - Мушкетный залп 
+pchar.perks.list.GrapplingProfessional - Мастерский абордаж 
+pchar.perks.list.BasicBattleState - Основная защита корабля 
+pchar.perks.list.AdvancedBattleState - Продвинутая защита корабля 
+pchar.perks.list.ShipDefenseProfessional - Профессионал по защите корабля 
+pchar.perks.list.LightRepair - Легкий ремонт 
+pchar.perks.list.InstantRepair - Быстрая починка 
+pchar.perks.list.ShipSpeedUp - Увеличение скорости корабля 
+pchar.perks.list.ShipTurnRateUp - Увеличение маневренности корабля 
+pchar.perks.list.StormProfessional - Плавание в штормах 
+pchar.perks.list.Turn180 - Маневренный разворот корабля 
+pchar.perks.list.SandbankManeuver - Маневры на мелководье 
+pchar.perks.list.SailingProfessional - Опытный мореплаватель 
+pchar.perks.list.FlagPir - Флаг пиратов 
+pchar.perks.list.FlagEng - Флаг Англии 
+pchar.perks.list.FlagFra - Флаг Франции 
+pchar.perks.list.FlagSpa - Флаг Испании 
+pchar.perks.list.FlagHol - Флаг Голландии 
+pchar.perks.list.Brander - Брандер 
+pchar.perks.list.Troopers - Высадка десанта союзных кораблей 
+pchar.perks.list.BasicCommerce - Базовая торговля 
+pchar.perks.list.AdvancedCommerce - Продвинутая торговля 
+pchar.perks.list.Carpenter - Плотник 
+pchar.perks.list.Builder - Кораблестроитель 
+pchar.perks.list.WindCatcher - Увеличение динамики 
+pchar.perks.list.SailsMan - Быстрые паруса 
+pchar.perks.list.Doctor1 - Врач 
+pchar.perks.list.Doctor2 - Спаситель жизни 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ДОБАВЛЕНИЕ ОЧКОВ ПЕРКОВ: 
+
+В левой части пишем: 
+PChar.Perks.FreePoints_Self - добавляет очки личных перков для распределния 
+PChar.Perks.FreePoints_Ship -добавляет очки корабельных перков на распредление 
+В правой части выставляем кол-во очков которые хотим распределить, т.е. написав для личных способностей, например 10 мы сможем получить 10 очков которыми можем взять 10 любых личных перков/способностей. 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+КОРАБЛИ: 
+
+1. Сгенерировать корабль функцией GenerateShip(N, true) где N - номер шаблона корабля из списка: 
+GenerateShip(0, true) Tartane - Тартана 
+GenerateShip(1, true) WarTartane - Баркас 
+GenerateShip(2, true) Lugger - Люггер 
+GenerateShip(3, true) Sloop - Шлюп 
+GenerateShip(4, true) Barque - Барк 
+GenerateShip(5, true) Schooner - Шхуна 
+GenerateShip(6, true) Caravel - Каравелла 
+GenerateShip(7, true) Fleut - Флейт 
+GenerateShip(8, true) Barkentine - Баркентина 
+GenerateShip(9, true) Brigantine - Бригантина 
+GenerateShip(10, true) Brig - Бриг 
+GenerateShip(11, true) Galeon_l - Галеон 
+GenerateShip(12, true) Corvette - Корвет 
+GenerateShip(13, true) Galeon_h - Тяжёлый галеон 
+GenerateShip(14, true) Pinnace - Пинас 
+GenerateShip(15, true) Frigate - Фрегат 
+GenerateShip(16, true) LineShip - Линейный корабль 
+GenerateShip(17, true) Battleship - Боевой корабль 
+GenerateShip(18, true) Warship - Военный корабль 
+GenerateShip(19, true) Manowar - Ман-о-вар 
+GenerateShip(20, true) SoleyRu - Королевский линейный он же Королевский Ман-о-вар 
+GenerateShip(21, true) BRIGQEEN - Уникальный бриг 
+GenerateShip(22, true) BRIGSW Бриг - 'Морской Волк' 
+GenerateShip(23, true) XebekVML - Щебека 
+GenerateShip(24, true) CORVETTE_QUEST - Корвет, равных которому найти невозможно 
+GenerateShip(25, true) ArabellaShip Фрегат - 'Арабелла', бывший 'Синко Льягас' 
+GenerateShip(26, true) Flyingdutchman - 'Летучий Голландец' 
+GenerateShip(27, true) NoneBoat - Нет корабля 
+
+После чего в правой части получим уникальный номер созданного корабля (запомним этот номер). 
+2. Теперь введем pchar.ship.type, а в правой колонке введем число которое запомнили в п.1. 
+Все, корабль у ГГ изменился 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""2 
+ТОВАРЫ В ТРЮМЕ: 
+
+У всех вохникала проблема с нехваткой рома, провианнта и тд. С сегодняшнего дня с этим покочино. Позвольте представить: pchar.ship.cargo.goods.N – товары в трюме корабля, где N – товар корабля, например pchar.ship.cargo.goods.bombs – бомбы. Пишем в левой колонке pchar.ship.cargo.goods.N, а правой указываем количество товара (сколько душе захочется). В N можно записать: 
+pchar.ship.cargo.goods.Balls - ядера 
+pchar.ship.cargo.goods.Grapes - картеч 
+pchar.ship.cargo.goods.Knippels - книппелеч 
+pchar.ship.cargo.goods.Bombs - бомбы 
+pchar.ship.cargo.goods.Sailcloth - паруса 
+pchar.ship.cargo.goods.Planks - доски 
+pchar.ship.cargo.goods.Slaves - рабы 
+pchar.ship.cargo.goods.Wheat - пшеница 
+pchar.ship.cargo.goods.Ebony - черног дерево 
+pchar.ship.cargo.goods.Chocolate - какао 
+pchar.ship.cargo.goods.Sugar - сахар 
+pchar.ship.cargo.goods.Wine - вино 
+pchar.ship.cargo.goods.Linen - полотно 
+pchar.ship.cargo.goods.Rum - ром 
+pchar.ship.cargo.goods.Tobacco - табак 
+pchar.ship.cargo.goods.Coffee - кофе 
+pchar.ship.cargo.goods.Mahogany - красное дерево 
+pchar.ship.cargo.goods.Cinnamon - корица 
+pchar.ship.cargo.goods.Copra - копра 
+pchar.ship.cargo.goods.Paprika - паприка 
+pchar.ship.cargo.goods.Fruits - фрукты 
+pchar.ship.cargo.goods.Ale - эль 
+pchar.ship.cargo.goods.Silk - шелк 
+pchar.ship.cargo.goods.Clothes - одежда 
+pchar.ship.cargo.goods.Cotton - хлопок 
+pchar.ship.cargo.goods.Sandal - сандал 
+pchar.ship.cargo.goods.Leather - кожа 
+pchar.ship.cargo.goods.Oil - масло 
+pchar.ship.cargo.goods.Food - провиант 
+pchar.ship.cargo.goods.Weapon - оружие 
+pchar.ship.cargo.goods.Gold - золото 
+pchar.ship.cargo.goods.Silver - серебро 
+pchar.ship.cargo.goods.Powder - порох 
+pchar.ship.cargo.goods.Brick - кирпи 
+pchar.ship.cargo.goods.Medicament - лекарства 
+pchar.ship.cargo.goods.Cannon_12 - Пушка 12ф. (в трюме) 
+pchar.ship.cargo.goods.Cannon_16 - Пушка 16ф. 
+pchar.ship.cargo.goods.Cannon_24 - Пушка 24ф. 
+pchar.ship.cargo.goods.Cannon_32 - Пушка 32ф. 
+pchar.ship.cargo.goods.Cannon_42 - Пушка 42ф. 
+pchar.ship.cargo.goods.Culverine_12 - Кулеврина 12ф. 
+pchar.ship.cargo.goods.Culverine_16 - Кулеврина 16ф. 
+pchar.ship.cargo.goods.Culverine_24 - Кулеврина 24ф. 
+pchar.ship.cargo.goods.Culverine_32 - Кулеврина 32ф. 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+ЧИТЫ ДЛЯ КОМАНДЫ: 
+
+Все чит-коды которые можно применить к главному герою через команду pchar, с таким же успехом можно применить к любому офицеру (вкл. квестовых), через команду Characters, но для этого нам надо выяснить уникальный номер офицера, для этого вводим в левой колонке: 
+GetPassenger(pchar,N) - функция возвращает индекс офицера на борту корябля ГГ где N номер офицера начиная от 0 (в том числе и пленников) 
+GetCompanionIndex(pchar,N) - функция возвращает индекс офицера назначенного капитаном на корабль входящий в группу кораблей ГГ где N номер корабля начиная от 1 (0 вернет ГГ) 
+Некоторые функции-читы для офицеров: 
+Characters[i].Reputation - в левой части выставляем репутацию 
+Таким же образом можно увеличить его лояльность (хотя у Огла она отключена): 
+Characters[i].loyality - в левой части выставляем лояльность, она устанавливается от 0 до 35. Лояльность 35 преданный офицер, однако реально в игре удерживается на уровне 33-34 
+Или же добавить перки/способности: 
+Characters[i].perks.list.N - где N, название перка (см. спойлер выше) 
+Characters[i].chr_ai.HP - текущий уровень жизни 
+Characters[i].chr_ai.HP_Max - максимальный уровень жизни 
+Ну и для полоски здоровья (которая в параметрах перса по F2 изменяется от "Ужасное" до "Отличное") 
+Characters[i].health.Hp - текущий уровень здоровья 
+Characters[i].health.MaxHp - максимальный уровень здоровья 
+Вообщем мы получили команду вида: 
+Characters[339].... где заместо 339 пишем индекс любого другого офицера которого найдём, а после этого прописываем любую из команд-читов, что описывались выше, но только там через команду pchar, а здесь через Characters 
+
+Characters[N].OfficerWantToGo.DontGo - в правой части заместо error выставляем 1, таким образом получаем офицера который никогда не уйдёт со службы, даже с нулевой лояльностью (что бы отменить так же пишем чит и выставляем 0) 
+Как заставить взять офицера нужное оружие: 
+
+Если офицер не хочет брать находящуюся у него в инвентаре саблю/пистолет, то пишем в левой части: 
+Characters[N].equip.blade - используемый клинок 
+Characters[N].equip.gun - соответственно пистолет 
+В правой колонке соответственно вводим имя предмета из инвентаря, например чтобы взял кавалерийскую саблю вводим "blade30". 
+pchar.skill.freespecial перекинуть баллы с какой-нить характеристики на силу 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+КАЛИБР ОРУДИЙ: 
+
+pchar.ship.cannons.type 7=32фунт; 8=42фунт; 9=48фунт - орудия на корабль 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+Порошок мумии GiveItem2Character(pchar, "Powder_mummie") 
+
+TakeNItems(pchar, "Mineral3",400) Вроде как свечи 
+
+TakeNItems(pchar, "Coins",666) чёрные жемчужины... 
+
+pchar.questtemp.ascold.shipyardercolony 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" """""""""""""""""""""""""""""""""" 
+ОТНОШЕНИЯ МЕЖДУ НАЦИЯМИ: 
+
+Спойлер: 
+В левой колонке: 
+SetNationRelationBoth(XXX, YYY, ZZZ) - функция устанавливает отношения ZZZ между нациями XXX и YYY. 
+Нации: 
+0 или ENGLAND - Англия 
+1 или FRANCE - Франция 
+2 или SPAIN - Испания 
+3 или HOLLAND - Голландия 
+4 или PIRATE - Пираты 
+Отношения: 
+0 или RELATION_FRIEND - Дружеские 
+1 - Торговые 
+2 или RELATION_ENEMY - Вражеские 
+Вводить без "" или просто цифрами. 
+
+Например: 
+SetNationRelationBoth(PIRATE, FRANCE, RELATION_FRIEND) или SetNationRelationBoth(4, 1, 0) установит дружеские отношения между пиратами и Францией 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+Спойлер: 
+Для телепортации необходимо знать id локации в которую хочешь переместиться. Его можно посмотреть заранее, если ввести pchar.location, то в правой части отобразится ID той локации, в которой сейчас находится ГГ. Если необходимо переместиться в посещённую ранее локацию, можно найти сейв в ней и загрузив его посмотреть ID 
+Также можно посмотреть ID локаций в файле по адресу: 
+\RESOURCE\INI\texts\russian\LocLables.txt 
+
+Телепортация: 
+DoReloadCharacterToLocation("id локации", "goto", "goto1") 
+или 
+DoQuestReloadToLocation("id локации", "goto", "goto1", "") 
+Пустые кавычки во втором варианте в конце обязательны! 
+Примечание: телепортация не работает при попытке переместиться в квестовые локации, например в Храм Великой Жизненной Силы... 
+
+Порядок взлома игры через artmoney: 
+Tih писал(а):
+
+* запускаем ArtMoney 
+* запускаем игру в оконном режиме 
+* смторим на то число, которое хотим изменить (допустим "навигация" - 13) 
+* сворачиваем игру (Alt+Tab) 
+* в ArtMoney выбираем процесс с игрой, нажимаем "искать". Параметры поиска: Искать "Точное значение", Значение: "число которое в данный момент принимает умение, в данном случае 13", Тип: "Текст" 
+* возвращаемся в игру и прокачиваем умение до следующего уровня (была навигация 13, стала 14) 
+* В artmoney жмём "Отсеять" и пишем новое значение (в данном примере "14") Последние два пункта повторяем, пока количество значений в таблице не уменьшиться хотя бы до 7-8. 
+* теперь методом подбора по очереди изменяем значения из таблицы (предварительно перекинув найденные значения в правую колонку) на то, которое нужно. Если при изменении значения, нужный показатель не меняется, то вставляем первоначальное значение во избежании багов, и удаляем из таблицы. И так, пока не найдем нужное число. 
+* возвращаемся в игру, сохраняемся. 
+Таким способом можно взломать практически любое число в игре.
+
+
+Итак,друзья,хочу вам подсказать небольшой чит:в папке с игрой находим файл option,открываем его блокнотом,находим в нём строку startgameparam.mod_skill_enemy_rate=1(параметр =1 может быть другой)меняем его на=-7,и сохраняем изменения.Что это даёт:начав игру,в пещере войдите в ауру(бой с скелетами)и вы увидите,что их удары бесполезны(нанесения уронона в других боях практически не возможно);поднятие морали команды стоит 5 золотых монет,причём в независимости от количества человек вашей команды;ежемесечная зарплата офицеров и вашей команды отсуствует совсем(самые крутые офицеры стоят вобще копейки).Теперь касательно боёв на кораблях:возьмём пример:вы на люггере против 2 люггеров-вы их разнесёте в пух и прах!!!Ну и наконец самое главное:этот чит работает в Корсарах ВЛ,ГПК и конечно в ПС(естественно и в других модификациях).Есть вероятность,что игра не будет сохраняться,если что-пишите здесь,на форуме,объясню,что делать.Удачной игры!!! 
+
+всё там идёт - "лично проверял": 
+1. находиш файл 
+\Корсары Город Потерянных Кораблей\engine.ini 
+2. редактируеш в нём 23-ю строчку 
+с "debugwindow = 0" 
+на "debugwindow = 1" 
+3. если все остальные настройки установлены как надо 
+задаёш файлу engine.ini в свойствах атрибут "только чтение", 
+шоб небыло автоматического сбрасывания 
+с "debugwindow = 1" 
+на "debugwindow = 0" 
+4. в игре нажимаеш F5 и "прикидываешся супермэном")))
+
+ну в принципе да, артмани может всю игру запороть, но мы в этой теме как раз и обсуждаем читерство. 
+2 недели назад один мой кореш попросил меня скинуть ему образ гпк и пач поновее, ну я ему скинул (пач 1.3.2), он мне через 5 часов звонит в панике говорит что мол сейв запорол - никто с ним разговаривать не хочет: посылают, губернатором/терминатором обзываются и вооще говорят что он читер  
+оказывается он там в артмани колдовал... 
+я в недоумении - такой фигни ведь раньше не было, начал разбираться. 
+оказывается блэкмарки круто пошутили с любителями артмани - они поставили ограничители на некоторые значения 
+1. суммарно все ПИРАТЕС увеличивать нельзя - 42 это предел, если превысить это значение то игра будет считать вас читером 
+2. жизнь не должна превышать 565.0000000 
+3. корпус корабля - 16000 
+4. скорость корабля - 30.0000000 
+если ломать в меру и правельно, то проблем возникнуть не должно
+
+0. у тя пустой рабочий слол, корсары не запущены, позаботься заранее, чтобы жизь была по полной 
+(например 45 / 45) 
+1. запускаеш артмани, запускаеш корсары гпк 
+2. сверяешся: всё точно - жизь 45 / 45 
+3. в артмани выбираеш процесс Legend is Back 
+4. нажимаеш кнопку Искать 
+5. параметры: искать - точное значение, тип - текст, значение - 45.0000000, нажимай "искать" 
+первые 2 значения - они с близкими адресами ( у меня примерно 02A*****), это и есть то что ты ищеш 
+1ое зачение это текущая жизнь, 2ое - максимальная 
+желаю удачи и помни что ЧИТЕРСТВО ПРЕСЛЕДУЕТСЯ КОДЕКСОМ  
+
+Добавлено (27.10.2010, 18:27) 
+--------------------------------------------- 
+да ещё у адресов искомых значений последний символ должен быть иои 0 или 8 например 
+02A03F48, 02A245D0 и тд
+
+чтоб коды в Корсарах заработали(в ПС), надо редактировать фаил "engine.exe" 
+находим там запись - Acceleration , а рядом с ней набор символов $#..we^b9,r 
+меняем их на слово DebugWindow , всё, чит-коды работают(незабываем в файле engine.ini поменять значение опции DebugWindow=1)!  
+Естественно редактировать фаил надо так, что бы символы заменялись! А не стирать старые, а потом вписывать новые(произойдет смещение машинных кодов, и игра не запустится, будет выдавать ошибку)!!!
+
+да не надо ничё искать AndrewHa написал же: 
+AndrewHa писал(а):
+рядом с Acceleration набор символов $#..we^b9,r
+
+находишь Acceleration и идёшь в файл/редактор файла 
+а там всё просто
+
+В папке: "\Аkellа Gаmes\Корсары Возвращение Легенды" в файле "options"
+ecть cтpoки:
+startgameparam.playerprofile=Angel
+startgameparam.mod_skill_enemy_rate=10
+startgameparam.bhardcoregame=0
+startgameparam.brechargepistolonline=1
+startgameparam.iencountersrate=3
+startgameparam.iarcadesails=0
+startgameparam.herotype=Adventurer
+startgameparam.nation=2
+startgameparam.curheronum=3
+
+нaxoдим cтpoчкy: "startgameparam.mod_skill_enemy_rate=10"
+и мeняeм ee нa "startgameparam.mod_skill_enemy_rate=-9999999999"
+
+в caмoм нaчaлe coздaния гepoя yвeличивaeтcя дo бecкoнeчнocти пepeнocимый вec.
+
+Пapaмeтpы cтaнoвятcя c минycaми, нo кoгдa cилy cтaвим 4, 7 или 10 тo вcё
+cтaнoвитcя нopмaльным и нe cмoтpитe нa кoличecтвo oпытa, кoтopoe нyжнo
+зapaбoтaть вo втopocтeпeнныx пapaмeтpax. 
+Bнимaниe: He зaбyдьтe cдeлaть peзepвнyю кoпию peдaктиpyeмoгo фaйлa!
+
+B пaпкe \Resource\Ini\interfaces\ нaйдитe фaйл character_all.ini
+B нeм нaйдитe cтpoкy [PERK_CANCEL]
+
+и нa двe cpoчки нижe: command = click,event:ExitPerkMenu
+зaмeнитe ee нa cтpoчкy: command = click,event:AcceptPerk
+
+Teпepь в игpe для тoгo, чтoбы дoбaвить любoй пepк ceбe или oднoмy
+из cвoиx oфицepoв дocтaтoчнo бyдeт пpocтo выбpaть пepк из мeню и
+в пoявившeмcя oкoшкe нaжaть: "Oтмeнa".
+
+Bыбpaнный пepк бyдeт дoбaвлeн, нo cчeтчик пepкoв yмeньшитcя нa 1.
+T.e. ecли был 0, тo cтaнeт -1.
+
+Я нашел как fog_enable 0 в консоль- убрать туман
+
+
+erra3, там же в комментариях описаны функции 
+
+Кусочек кода
+// флаг - игрок читер 
+ bool    bPlayerIsCheater =  false;  // на перспективу, патчем 
+ // режим супер читов 
+ bool    bBettaTestMode = false;
+
+ вместо false поставь true
+ 
+ 
+ Включить матросов на палубе 
+ ALCameras.c  ищем строчку Sailors.IsOnDeck высавляем 1
+
+Это "чистые" скрипты. Просто так их не запустишь. Выкладывал для мододелов в 1-ую очередь.
+
+Есть 2 способа запустить их.
+1) Долго, но верно: вручную переименовывать папки\файлы и, соответственно, пути вызовов.
+2) Быстро, но не стабильно: взять engine.exe из мода Тайны Дальних Морей 2 для ГПК - он читает скрипты напрямую из папки PROGRAM. Но возможны рандомные вылеты...
+
+В настройках engine.ini есть строчка codefiles = 0
+меняем ее на
+codefiles = 1
+и получаем все файлы из папки Program которые грузятся во время игры. Предупреждаю файлы с расширением .b
+Если их открыть то в самой первой строчке будет написано их местоположение в папках...
+как их перегнать в нормальный человеческий код не знаю...
+
+
+Для всех, кто хотел отредактировать значения PIRATES и не стать "Терминатором"
+Откройте PROGRAM\characters\QuestsUtilite.c любым текстовым редактором и прокрутите в самый низ файла, там вы найдете функцию bool CheckChit() и, чтобы не думать что надо менять а что не надо, просто снесите все и замените на:
+Код:
+bool CheckChit()
+{
+    return false;
+}
+Или уберите в комментарий:
+Код:
+bool CheckChit()
+{
+if (bBettaTestMode) return false;
+if (sti(pchar.Ship.Type) == SHIP_NOTUSED) return false;
+/*if (51 - (GetCharacterSPECIALSimple(pchar, SPECIAL_S) + GetCharacterSPECIALSimple(pchar, SPECIAL_P) + GetCharacterSPECIALSimple(pchar, SPECIAL_E) + GetCharacterSPECIALSimple(pchar, SPECIAL_C) + GetCharacterSPECIALSimple(pchar, SPECIAL_I) + GetCharacterSPECIALSimple(pchar, SPECIAL_A) + GetCharacterSPECIALSimple(pchar, SPECIAL_L)) < 0 || sti(pchar.rank) > 55 || LAi_GetCharacterMaxHP(pchar) > 565 || 30 - (stf(RealShips[sti(Pchar.Ship.Type)].SpeedRate)) < 0 || 30000 - sti(RealShips[sti(Pchar.Ship.Type)].HP) < 0)
+{
+   return true;
+}*/
+    return false;
+}
+И сохраните
+Если хотите изменить максимальное значение очков PIRATES - откройте PROGRAM\characters\characters.h любым текстовым редактором и найдите строку
+Код:
+#define SPECIAL_MAX         10
+И меняйте 10 на любое значение, но тут на свой страх и риск. (Скорее всего все будет нормально, но не факт) (не забывайте сохранять изменения)
+p.s. Надеюсь я не нарушил никаких правил, раскрыв тайну античита?
+
+
+В папке: "...\Akella Games\Корсары Возвращение Легенды\" в файле "options" есть строки:
+startgameparam.playerprofile=Angel
+startgameparam.mod_skill_enemy_rate=10
+startgameparam.bhardcoregame=0
+startgameparam.brechargepistolonline=1
+startgameparam.iencountersrate=3
+startgameparam.iarcadesails=0
+startgameparam.herotype=Adventurer
+startgameparam.nation=2
+startgameparam.curheronum=3
+
+находим строчку:
+
+startgameparam.mod_skill_enemy_rate=10
+
+и меняем ее на:
+
+startgameparam.mod_skill_enemy_rate=-9999999999
+
+в самом начале создания героя увеличивается до бесконечности переносимый вес.
+
+Параметры становятся с минусами, но когда силу ставим 4, 7 или 10 то всё становится нормальным и не смотрите на количество опыта, которое нужно заработать во второстепенных параметрах. У меня почти всё стало на 100 в начале когда я захватил корабль контрабандистов, при этом никто не дерётся кроме героя, корабли 1-класса могут захватывать помощники без команды, форт выносится одним залпом корабли перегружены товарами, всего много, сразу ГЕРОЙ, офицеры сами при поступлении на службу платят ОЧЕНЬ много. Но проблема в том, что сохраниться нельзя.
+
+Внимание: Не забудьте сделать резервную копию редактируемого файла!
+
+В папке \Resource\Ini\interfaces\ найдите файл character_all.ini
+В нем найдите строку [PERK_CANCEL]
+и на две срочки ниже:
+
+command = click,event:ExitPerkMenu
+
+замените ее на строчку:
+
+command = click,event:AcceptPerk
+
+Теперь в игре для того, чтобы добавить любой перк себе или одному из своих офицеров достаточно будет просто выбрать перк из меню и в появившемся окошке нажать: "Отмена".
+
+Выбранный перк будет добавлен, но счетчик перков уменьшится на 1. Т.е. если был 0, то станет -1.
+
+В папке игрой есть файл engine.ini. Откройте его блокнотом, и найдите строку:
+
+debugwindow = 0
+
+замените ее на:
+
+debugwindow = 1
+
+Во время игры нажмите кнопку [F5], чтобы появилось окно консоли. Вводите в левую строку один из нижеуказанных чит кодов:
+
+LAi_SetImmortal(pchar, true) - делает вас и ваш корабль неуязвимым, но не ваших офицеров и их корабли
+LAi_SetImmortal(pchar, false) - собственно, отключает бессмертие
+AddMoneyToCharacter(pchar, <число>) - получить указанное кол. денег
+GiveItem2Character(pchar, "ххх", <число>) - получить указанное количество предметов ххх, где xxx это:
+
+blade1 - blade35 - мечи, сабли, рапиры...
+topor1 - topor3 - топоры
+toporAZ - макуауитль, самая мощное и тяжелое холодное оружие в игре
+pistol1 - pistol6 - пистолеты
+pistol7 - дробовик
+cirass1 - cirass5 - кирасы
+spyglass1 - spyglass5 - подзорные трубы
+potion1 - лечебное зелье
+potion2 - эликсир
+potion3 - противоядие
+indian11 - индийский крысиный бог, благодаря которому
+вы напрочь забудете о крысах
+bullet - пули
+ShipyardsMap - чертеж корабля, который просит вас найти хозяин верфи
+MayorsRing - обручальное кольцо, которое просит вас найти губернатор
+UserersJew - драгоценный камень, который просит вас найти ростовщик
+map_LSC - карта ГПК
+gold - золото
+
+или просто открыть файл
+...\<папка_с_игрой>\Resource\Ini\texts\russian\ItemsDescribe.txt
+и выбрать из описаний что надо. Например (pchar,"pistol6")
+Писать обязательно в кавычках!
+
+
+pchar.ship.cannons.type  - позволяет ставить любые орудия на любые корабли. После ввода чита в правой колонке появляется число это орудия, которые уже стоят на вашем судне. Вводить надо от 1 до 9. 
+9 - 48 фунтовые пушки (фортовые орудия)
+8 - 42 фунтовые пушки.
+
+pchar.Ship.Crew.Quantity - количество команды вашего корабля, как введете чит, в правой колонке появится число - это и есть численность вашей команды, изменяйте его на нужное.
+
+Bвoдим oдин из нижeyкaзaнныx чит кoдoв, и в пpaвoй кoлoнкe пoявляeтcя чиcлo, мeняeм eгo oт 1 дo 100:
+pchar.skill.Leadership - aвтopитeт
+pchar.skill.FencingLight - лeгкoe opyжиe
+pchar.skill.Fencing - cpeднee opyжиe
+pchar.skill.FencingHeavy - тяжeлoe opyжиe
+pchar.skill.Pistol - пиcтoлeты
+pchar.skill.Fortune - yдaчa
+pchar.skill.Sneak - cкpытнocть
+pchar.skill.Sailing - нaвигaция
+pchar.skill.Accuracy - мeткocть
+pchar.skill.Cannons - opyдия
+pchar.skill.Grappling - aбopдaж
+pchar.skill.Defence - зaщитa
+pchar.skill.Repair - пoчинкa
+pchar.skill.Commerce - тopгoвля
+pchar.rank - вaш ypoвeнь
+pchar.Reputation - вaшa peпyтaция
+pchar.Money - дeньги 
+
+
+
+
+Количество солдат в фортах можно поменять в файле ships_init.c там в самом конце FORT 
+        refShip.MaxCrew                  = 6800;
+ refShip.OptCrew            = 5600;
+ refShip.MinCrew            = 3400; там нужно тестить с числами? 
+
+
+Цены на орудия в папке Program/cannons в файле cannons_init.c, найди строчку rCannon.Cost= в каждом калибре, после "=" поставь значение которое тебе нужно. Значение 200 это примерно 800 реалов. А цены на ремонт в папке Program/scripts файл ShipsUtilites.c найди строки float scost = SailRepairCoeff * (shipPrice*SAIL_COST_PERCENT+99.0)/100.0; и float scost = HullRepairCoeff * (shipPrice*HULL_COST_PERCENT+99.0)/100.0; и поменяй в конце деление 100 на большее число, например 200 или какое хочешь?
+
+
+В \PROGRAM\scripts\ файл ShipsUtilites там строка if (sti(rRealShip.Stolen) == true) это проверка на захваченный как я понял. Меняешь true на false, если не хочешь, чтобы проверялся или же ниже есть строчка price = makeint(price/9); - цена ворованного корабля делится на 9, можно поставить 2, тогда цена будет 50% или 3, тогда 1/3 от цены?
+
+
+Заходишь в корневую папку игры, затем в папку Optional mods(пример пути      E:\Programm Files\Корсары - ГПК rev.3\Optional_mods), там будет текстовый файл в котором будет описано как влючить/отключить полоски ХП)?
+
+
+Дележ добычи! Подробности в подсказке на кнопке "Долг" формы Ф2:Корабль.
+Мод дележа настраивается в RESOURCE\INI\texts\russian\PartitionSettings.txt. Там же описание формулы.
+Добавлена возможность менять множитель зарплаты матросам - устанавливается в файле RESOURCE/INI/texts/russian/Mods_On_Off_File.txt.
+
+
+Проблемы со звуком:
+
+1. В папке Akella Games/Корсары Город Потерянных Кораблей откройте Блокнотом файл engine.ini и найдите следующие строчки:
+
+[sound]
+sound path = resource\sounds\
+UseMM = 0
+
+По дефолту вместо 0 стоит 1. Нужно исправить 1 на 0.
+
+2. Если звук вообще пропал или не помог совет в пункте 1, то попробуйте заменить в папке с игрой Akella Games/Корсары Город Потерянных Кораблей файл fmodex.dll на новый, который можно скачать ниже по ссылке:
+
+Скачать файл fmodex.dll
+
+Перед заменой, сделайте резервную копию файла fmodex.dll.
+
+Меняем протяженность дня на глобальной карте
+Файл PROGRAM\worldmap\worldmap_init.c
+Находим значение:
+
+Код: Выделить всё
+
+    worldMap.date.hourPerSec = 1.5;
+
+Чем оно ниже, тем медленней идет день
+
+worldMap.playerShipActionRadius = 70.0;
+расстояние для атаки с глобальной карты
+
+
+Да, в этом же файле можно вернуть старую "фичу" с офами-абордажниками [1] и поставить паузу [2]
+
+[1] чит
+Файл itemsbox.c
+Править вот эту строчку ;)
+
+if(IsOfficer(&characters[_curCharIdx]) && PChar.location == Characters[_curCharIdx].location)
+на
+if(IsOfficer(&characters[_curCharIdx])) // && PChar.location == Characters[_curCharIdx].location)
+Теперь можно грузить офов по полной, даже если их рядом нет.
+
+
+[2] чит
+Файл itemsbox.c
+Ставим игру на паузу, когда лазим в сундуке/трупе (безнаказанное воровство)
+Функция void InitInterface_RS(string iniName, ref itemsRef, string faceID)
+В ней находим StartAboveForm(false); и прописываем вместо нее StartAboveForm(true)
+Готово! Теперь при обысках игра ставится на паузу, и вы не потеряете "драгоценный" лут из-за 300 секунд, которые отведены на исчезновение трупа.
+
+
+[3] чит
+Открыть меню персонажа, инвентарь и прочее (F2) даже при абордаже или в боевом режиме(если сменили клинок, придется сложить в ножны и снова достать). Что мы делаем... Все очень просто. В файле seadogs.c находим функцию отвечающую за F2:
+void ProcessInterfaceKey()
+В ней просто закомментим все, кроме if( CharacterIsDead(GetMainCharacter()) ) {return;}(не мешает, работает при смерти ГГ) и LaunchSelectMenu();(открывает сам интерфейс управления)
+Должно получится так:
+void ProcessInterfaceKey()
+{
+if( CharacterIsDead(GetMainCharacter()) ) {return;}
+/*if(bSeaActive && !bAbordageStarted)
+{
+if( CheckAttribute(&BattleInterface,"ComState") && sti(BattleInterface.ComState) != 0 )
+{return;}
+}
+else
+{
+if( SendMessage(GetMainCharacter(), "ls", MSG_CHARACTER_EX_MSG ,"IsFightMode") != 0 )
+{return;}
+if( CheckAttribute(&objLandInterface,"ComState") && sti(objLandInterface.ComState) != 0 )
+{return;}
+}
+if (bDisableCharacterMenu) // boal
+{
+Log_SetStringToLog(XI_ConvertString("You can`t launch menu"));
+return;
+}
+if (bAbordageStarted && !bCabinStarted && !bDeckBoatStarted)
+{
+Log_SetStringToLog(XI_ConvertString("You can`t launch menu"));
+return;
+}*/
+LaunchSelectMenu();
+} 
+
+
+
+Консоль на F5 есть и работает,но сначала нужно поправить в папке PROGRAM файл Debuger.с строку: // Warship. Сюда повесил дамп аттрибутов - по Ф12 не нужно это
+void ActiveF5Control(),на любую другую кнопку ActiveF5(например:ActiveF6) и после этого консоль в оконном режиме будет работать при нажатие кнопки F5
+
+
+
+Алгоритм:
+1. Скачайте и установите программку CFF explorer
+2. Откройте исполняемый файл игры ENGINE.EXE в cff explorer. Для этого выделите файл правой кнопкой мыши и выберите "Открыть в CFF".
+3. В разделе file header найдите в правом нижнем углу окна программы строчку characteristics и кнопку click here. Нажмите на эту кнопку и в появившемся меню поставьте галочку на app can handle >2gb address space.
+4. Сохраните изменения.
+5. Запускайте игру обычным способом.
+
+\PROGRAM\scripts\ShipsUtilites
+ворованный
+if (sti(rRealShip.Stolen) == true) //проверка на ворованный
+price = makeint(price/1); проверка проходить не будет если цифра 1
+
+float scost = SailRepairCoeff * (shipPrice*SAIL_COST_PERCENT+99.0)/300.0; стоимость ремонта чем больше цифра тем меньше ремонт
+
+
+Строка для шипс-инита перед makeref(refShip,ShipsTypes[SHIP_BOAT]) в Лодка;:   log_info("обновление шипс-инита");
+Строка для MainHero_dialog:   ShipsInit();  //код обновления шипс-инита
+Мысли вслух некогда дела ждут там вставлять между этими строками
+Link.l10 = RandPhraseSimple("Не сейчас. Нет времени.", "Некогда. Дела ждут.");
+Link.l10.go = "exit"
+ShipsInit();
+
+Вес меняется в файле RPGUtilite.c,строка int iBonus = 0
+
+Кол-во матросов в таверне в файле Crew.c начиная со строки void UpdateCrewInColonies
+
+
+
+
+
+1) нужен файл seadogs.c, который лежит в папке program
+
+[15:23]
+2) открываем чем угодно, если умеет подсвечивать синтаксис - будет удобнее.
+[15:24]
+3)
+ bool CheckForSlowBlock = bAltBalanceTimeSlow || MOD_SKILL_ENEMY_RATE == 3;
+Ctrl+F ищем вот эту строку.
+
+lllaxmatist
+TC
+ — 20.03.2024 15:33
+Она отвечает за запрет времени. Работает код так:
+
+Игра проверяет нажатие кнопки, что вообще на нее реагировать.
+Проверяется логическое действие.
+если 
+стоит галка альтернативного баланса
+ bAltBalanceTimeSlow
+или||
+сложность равна 3 (1-матрос, 2- кэп, 3 - адмирал)
+MOD_SKILL_ENEMY_RATE == 3
+
+если запрет сказал ДА, то функция отрабатывет return, тобиш возврат (конец работы функции, дальше строки не выполняются) до внесения изменений в сорость течения времени (ну и выводит сообщение что нельзя).
+
+Фактически написав
+
+bool CheckForSlowBlock = bAltBalanceTimeSlow;
+Запрещатор проверяет только галку альтБаланса. (но можно просто написать 
+bool CheckForSlowBlock =false;
+тогда и галка не поможет ГЫГЫ.) (изменено)
+
+3. комментируете или удаляет чек на MOD_SKILL_ENEMY_RATE == 3 и чуть ниже || ControlName == "TimeScaleSlowerBA")
+
+
+меняется в файле RPGUtilite.c,
+
+pchar.skill.freespecial = 18;
+			pchar.skill.Sailing = 85;
+			SetCharacterPerk(pchar, "SharedExperience");
+			SetCharacterPerk(pchar, "Doctor1");
+            SetCharacterPerk(pchar, "Doctor2");
+			SetCharacterPerk(pchar, "EmergentSurgeon");
+			pchar.money = 10000000;
+			SetCharacterPerk(pchar, "FlagEng");
+			SetCharacterPerk(pchar, "FlagFra");
+			SetCharacterPerk(pchar, "FlagSpa");
+			SetCharacterPerk(pchar, "FlagHol");
+			
+			
+			
+Строка для MainHero_dialog:
+			
+Link.l14 = RandPhraseSimple("Не сейчас. Нет времени.", "Некогда. Дела ждут.");
+			LAi_SetImmortal(pchar, true);
+			log_info("IMMORTAL");
+			//TakenItems(Pchar, "blade013", 1);
+			/* pchar.skill.freespecial = 21;
+			pchar.skill.Sailing = 85;
+			SetCharacterPerk(pchar, "SharedExperience");
+			SetCharacterPerk(pchar, "Doctor1");
+            SetCharacterPerk(pchar, "Doctor2");
+			SetCharacterPerk(pchar, "EmergentSurgeon");
+			pchar.money = 10000000;
+			SetCharacterPerk(pchar, "FlagEng");
+			SetCharacterPerk(pchar, "FlagFra");
+			SetCharacterPerk(pchar, "FlagSpa");
+			SetCharacterPerk(pchar, "FlagHol"); */
+			Link.l14.go = "exit";
+			
+			
+			
+Mods_On_Off_File
+
+// SalaryComplex_Coeff - множитель увеличения зарплаты офицеров и команды ( от 0.5 до +бесконечности)
+
+SalaryComplex_Coeff	{0.5}
+
+
+
+либо для своего корабля обновить ватерлинию через кнопку дебагера, надо попробывать через мысли вслух
+ref shTo;
+shTo = &RealShips[sti(Pchar.Ship.Type)];
+shTo.WaterLine = 0.5;
+
+У некоторых персонажей есть параметр SaveItemsForDead = true, он отвечает за сохранение вещей после смерти
+
+StoreUtilite
+
+float skillModify;
+	if(_PriceType==PRICE_TYPE_BUY)
+	{
+		skillModify = 1.46 - _TradeSkill*0.019; // boal 20.01.2004
+		if(CheckOfficersPerk(pchar,"AdvancedCommerce"))	{ skillModify -= 0.2; }
+		else
+		{
+			if(CheckOfficersPerk(pchar,"BasicCommerce"))	{ skillModify -= 0.1; }
+		}
+		if(CheckOfficersPerk(chref,"Trader"))	{ skillModify -= 0.05; }
+		if(tradeType == TRADE_TYPE_CANNONS)skillModify *= 1.3; //skillModify *= 4.3;//цены пушек меняем после применения перков, иначе непропорционально их влияние на итог
+		//if(tradeType == TRADE_TYPE_AMMUNITION) skillModify *= 3.3;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
+Карибская легенда
+
+№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№№
+
+E:\GameE\Caribbean Legend (2012-2024)\Caribbean Legend\Program\characters\characterUtilite.c
+
+string GetDepositRate(string type)
+{
+	float result = 1.0;
+	if (type == "peso")
+	{
+		//result = 2.0 + (makeint(((1.0 * (GetSummonSkillFromName(pchar, "Commerce") + GetSummonSkillFromName(pchar, "Leadership")) / 200) ) / 0.5 + 0.5)) * 0.5;
+		result = 10.0 + (makeint(((1.0 * (GetSummonSkillFromName(pchar, "Commerce") + GetSummonSkillFromName(pchar, "Leadership")) / 200) ) / 0.5 + 0.5)) * 0.5;
+		result += SZN_GetModifierMtp(M_DEPOSIT_SILVER_RATE, 0.0) * 100;
+	}
+	else result += SZN_GetModifierMtp(M_DEPOSIT_GOLD_RATE, 0.0) * 100;
+
+	if (HasPerk(pchar, "Investor")) result += PERK_VALUE_INVESTOR;
+
+	return ToHumanNumber(func_fmax(1.0, result));
+}

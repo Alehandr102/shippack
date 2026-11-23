@@ -1,0 +1,309 @@
+В этом уроке рассмотрим мелкие, но возможно некоторым очень нужные детали: что и как изменяется в разных скриптах.
+
+
+1.Для тех, кто делает аддон, пригодится следующее: изменение версии и названия игры в нижнем правом углу меню, начальный год игры и т.д. Скрипты такого плана хранятся в PROGRAMMS/_LSC_on_off.h 
+
+2. Новая озвучка. К примеру, вы создали нового НПС с именем "MouNPC" и хотите добавить ему озвучку. Для этого, помещаем в папку RESOURCE/Sounds/VOICE\Russian ваш звук в формате wav с названием MouNPC, а в файле RESOURCE/INI/aliases/russian/Greetings_alias.ini вставляем строки (советую вставлять их в самом конце) 
+
+Code
+[Gr_MouNPC] 
+ minDistance = 0.45 
+ maxDistance = 50.0 
+ volume = 1.0 
+ name = VOICE\Russian\MouNPC.wav
+
+
+ И не забудьте, что в скрипте с самим НПС должна быть строчка 
+
+ ch.greeting = "Gr_MouNPC"; 
+
+3. Возможно об этом уже говорилось, так что извините за повтор. Рассмотрим добавление скиллов к предметам. 
+
+ Открываем файл .../Корсары Город Потерянных кораблей/PROGRAM/characters/RPGUtilite 
+
+ Находи строки: 
+
+int GetCharacterSkillSimple(ref _refCharacter, string skillName) 
+ { 
+ if( !CheckAttribute(_refCharacter,"Skill."+skillName) ) return 1; 
+ int skillN = sti(_refCharacter.Skill.(skillName)); 
+
+ bool bHero = (sti(_refCharacter.index) == GetMainCharacterIndex()); 
+
+ // boal учет вещей --> 
+ if (bHero || CheckAttribute(_refCharacter, "Payment")) //IsCompanion(_refCharacter) || IsOfficer(_refCharacter)) 
+ { 
+ // Health 
+ if (bHero && MOD_SKILL_ENEMY_RATE > 1) // не халява 
+ { 
+ if (isSelfTypeSkill(skillName)) 
+ { 
+ skillN = skillN + 5*(GetHealthNum(_refCharacter) - 6); // max -5 
+ } 
+ } 
+
+ // бронзовый крест +1 удача 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "jewelry9", 1); 
+
+ // крест Антониу де Соуза +3 удача, +2 авторитет, +1 торговля. 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "DeSouzaCross", 3); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "DeSouzaCross", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_COMMERCE, "DeSouzaCross", 1); 
+
+ // Emerald Pendant +1 удача 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "jewelry15", 1); 
+
+ // Тотемы ацтеков 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "Totem_1", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "Totem_2", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_DEFENCE, "Totem_3", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_ACCURACY, "Totem_4", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_PISTOL, "Totem_5", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "Totem_6", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FENCING, "Totem_7", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_F_LIGHT, "Totem_8", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_F_HEAVY, "Totem_9", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_COMMERCE, "Totem_10", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SAILING, "Totem_12", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_REPAIR, "Totem_15", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "SkullAztec", -2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "SkullAztec", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_PISTOL, "KnifeAztec", -3); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_F_LIGHT, "KnifeAztec", -2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FENCING, "KnifeAztec", -2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_F_HEAVY, "KnifeAztec", -2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "Pasxalka", 1); 
+
+ // itmname_jewelry8 {Bronze Ring} +1 удача 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "jewelry8", 1); 
+
+ // Идол Пикахуатла +1 удача 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "indian7", 1); 
+
+ // Weird Animal Figurine (-1 авторитет) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian2", -1); 
+
+ // itmname_jewelry4 {Изумруд} (+1 авторитет) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "jewelry4", 1); 
+
+ // Small Mosaic (+1 торговля) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_COMMERCE, "indian3", 1); 
+
+ // iitmname_Mineral4 {Баклан} (-1 авторитет и -1 удача) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "mineral4", -1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "mineral4", -1); 
+
+ //filosof - добавим магических вещичек... (отнять мона исключительно у монстров...) 
+
+ //itmname_indian1 {Идол Иргантахула} (+1 авторитет и удача, -2 пистолеты). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian1", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "indian1", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_PISTOL, "indian1", -2); 
+
+ // itmname_indian5 {Маска Маркуханкату} (+1 удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "indian5", 1); 
+
+ // itmname_indian6 {Статуэтка Акумаларту} (+1 фехтование) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FENCING, "indian6", 1); 
+
+ // itmname_indian10 {Идол Йкстоикхатлу} (+2 пистолеты, +1 меткость, -2 удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_PISTOL, "indian10", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "indian10", -2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_ACCURACY, "indian10", 1); 
+
+ // itmname_indian12 {Идол Морхахтулака} (+1 фехтование). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_F_HEAVY, "indian12", 1); 
+
+ // itmname_indian14 {Идол Ихтилокстумба} (+2 торговля, -2 авторитет). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian14", -2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_COMMERCE, "indian14", 2); 
+
+ // itmname_indian15 {Ритуальная ванна} (+1 авторитет и защита, -1 удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian15", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_DEFENCE, "indian15", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "indian15", -1); 
+
+ // itmname_indian17 {Статуэтка тигра} (+1 удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "indian17", 1); 
+
+ // itmname_indian18 {идол древнего божества} (+2 навигация, -2 удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SAILING, "indian18", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "indian18", -2); 
+
+ // itmname_indian19 {маска из красного золота} (+2 меткость, +1 орудия, -2 удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_ACCURACY, "indian19", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_CANNONS, "indian19", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "indian19", -2); 
+
+ // itmname_indian20 {скипетр жреца} (+2 авторитет и -1 удача) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian20", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "indian20", -1); 
+
+ // itmname_indian21 {Церемониальный сосуд} (+2 авторитет, -1 удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian21", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "indian21", -1); 
+
+ // itmname_indian22 {странная вещь} (+2 защита, +1 фехтование, -1 авторитет и удача). 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_F_LIGHT, "indian22", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_DEFENCE, "indian22", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian22", -1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "indian22", -1); 
+
+ // itmname_Mineral3 {Хризоберилл} (+1 удача). 
+ //skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "Mineral3", 1); 
+
+ // itmname_Mineral8 
+ //skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_GRAPPLING, "Mineral8", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "Mineral8", -1); 
+
+ skillN = skillN + SetCharacterSkillBySculArtefact(_refCharacter, skillName); 
+ // itmname_Coins {Монета ацтеков} (-5 удача) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "Coins", -5); 
+
+ //statue1 +3 ремонт 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_REPAIR, STATUE1, 3); 
+ // одежда 
+ if (CheckAttribute(_refCharacter, "cirassId")) 
+ { 
+ switch (Items[sti(_refCharacter.cirassId)].id) 
+ { 
+ case "suit_1": 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_SNEAK, "suit_1", 2); 
+ break; 
+ case "suit_2": 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_COMMERCE, "suit_2", 2); 
+ break; 
+ case "suit_3": 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "suit_3", 2); 
+ break; 
+ } 
+ } 
+
+ // boal учет перегруза 19.01.2004 --> 
+ if ( GetItemsWeight(_refCharacter) > GetMaxItemsWeight(_refCharacter)) 
+ { 
+ skillN -= 20; 
+ } 
+ // boal учет перегруза 19.01.2004 <-- 
+ } 
+ // boal <-- 
+ if (skillN <= 1) skillN = 1; 
+ if( skillN > SKILL_MAX ) skillN = SKILL_MAX; 
+
+ return skillN; 
+ }
+
+
+ Это прописанны скиллы к предметам. 
+
+ допустим у вас предмет с ID "My111". Соответственно, вставляете эти две строки: 
+
+ // itmname_My111 {Мой личный предмет} 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "My111", 1); 
+
+ Если нужно добавить, что б у предмета было скиллы двух разновидностей, соответственно: 
+
+ // itmname_My111 {Мой личный предмет} 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "My111", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "My111", 1); 
+
+ И что бы все правильно с пробелами: 
+
+ // itmname_jewelry8 {Bronze Ring} +1 удача 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "jewelry8", 1); 
+
+ // itmname_My111 {Мой личный предмет} 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "My111", 1); 
+
+ // Идол Пикахуатла +1 удача 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "indian7", 1); 
+
+ // Weird Animal Figurine (-1 авторитет) 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian2", -1); 
+
+ Теперь, насчет названий и кол-ва: 
+
+ Там где SKILL_LEADERSHIP вместо LEADERSHIP вставляете нужное (к какому скиллу добавляется) 
+
+
+/////// 
+ LEADERSHIP -авторитет 
+ FORTUNE -удача 
+ SNEAK -скрытность 
+ COMMERCE -торговля 
+ F_LIGHT -легкое оружие 
+ F_HEAVY -тяжелое оружие 
+ FENCING -среднее оружие 
+ DEFENCE -защита 
+ ACCURACY -меткость 
+ PISTOL -пистолеты 
+ SAILING -навигация 
+ GRAPPLING -абордаж 
+ PEPAIR -починка 
+ DEFENCE -защита 
+ ////////
+
+
+ теперь собственно по клличеству. 
+
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "indian2", -1); 
+
+ в конце стоит -1. Значит, у предмета -10 авторитет. Если поставить -5, то соответственно будет -50 авторитет. Если поставить 9, то будет 90. и так далее. 
+
+ Вот пример, допустим предмету +20 авторитет и +10 удача, но -50 пистолеты. 
+
+ // itmname_My111 {Мой личный предмет} 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_LEADERSHIP, "My111", 2); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_FORTUNE, "My111", 1); 
+ skillN = skillN + SetCharacterSkillByItem(_refCharacter, skillName, SKILL_PISTOL, "My111", -5); 
+
+ Кстати если прописывать описание в ItemsDescribe, то нужно обязательно писать: 
+ (+10 авторитет) 
+ ну или что там. Говорю потому, что допустим мы же не прописываем урон пистолета в описании, он прописывается сам. 
+
+4. Не знаю, нужно или нет, но мож кому-нить пригодится: изменим движение чаек, акул, бабочек и "чего-то" еще, сам не знаю)))) 
+
+ Открывайте RESOURCE/INI/animals.ini и изменяйте любые значения. 
+ Вот, что обозначают некоторые из них: 
+
+ angle speed /////скорость 
+ height ///// высота 
+ circle time /////время кружения (короче, сколько летают) 
+ count ///// кол-во 
+ radius /////радиус их передвижения 
+
+ Ну, и вообщем, seagulls-это чайки, sharks-акулы, butterflies-бабочки. Эксперементируйте))) 
+
+5. Теперь изменим любой текст игры: т.е., к примеру, самая легка сложность игры-матрос, а вы хотите переименовать в..."легко". Все скрипты такого типа 
+ находятся в RESOURCE/INI/texts/russian/ 
+
+ Вот, какие описание где хранятся: 
+
+ AbilityDescribe.txt ////- описания перков; 
+ commands_name.txt ////- команды "причалить", "отчалить" и т.д.; 
+ common.ini ////- куча всего остального; 
+ ControlsNames.txt ////- настройки игры; 
+ MapDescribe.txt ////- описание карт; 
+ RPGDescribe.txt ////- РПГ описание; 
+ RumourTexts.txt ////- слухи;
+
+
+
+
+
+Модификация для игроков, испытывающих проблемы при смене погоды в игре (процесс ENGINE.EXE самостоятельно прекращается, игра зависает и т.п.).
+
+= = = = =
+1) Самое, основное, убираем визуальные эффекты.
+
+Открываем папку ...\Steam\steamapps\common\Pirates Odyssey To Each His Own\modules\techniques\weather и делаем резервную копию файла rain.sha, затем заменяем исходный файл на файл из этого архива:   rain_VMod.rar ( 381 байт ) Кол-во скачиваний: 291
+
+
+= = = = =
+2) Убираем озвучку дождя:   sound_scheme_VMod.rar ( 2,11 килобайт ) Кол-во скачиваний: 231
+Содержимое архива размещаем в папку (также не забываем сделать резервную копию!): ...\Steam\steamapps\common\Pirates Odyssey To Each His Own\RESOURCE\INI
+
+
+= = = = =
+Убираем гром:   sound_alias_VMod.rar ( 5,96 килобайт ) Кол-во скачиваний: 240
+Содержимое архива размещаем в папку (не забываем сделать резервную копию!): ...\Steam\steamapps\common\Pirates Odyssey To Each His Own\RESOURCE\INI\aliases
